@@ -2,18 +2,12 @@ package com.er.model;
 
 public abstract class AbstractEntity {
     protected Integer id;
-    protected String name;
 
-    protected AbstractEntity() {
+    public AbstractEntity() {
     }
 
-    public AbstractEntity(String name) {
-        this.name = name;
-    }
-
-    protected AbstractEntity(int id, String name) {
+    protected AbstractEntity(Integer id) {
         this.id = id;
-        this.name = name;
     }
 
     public int getId() {
@@ -24,16 +18,6 @@ public abstract class AbstractEntity {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-    public boolean isNew() {
-        return this.id == null;
-    }
 
     @Override
     public String toString() {

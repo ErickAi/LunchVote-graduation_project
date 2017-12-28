@@ -1,6 +1,6 @@
 package com.er.model;
 
-public class Dish extends AbstractEntity{
+public class Dish extends AbstractNamedEntity {
     private int price;
 
     public Dish() {

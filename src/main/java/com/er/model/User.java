@@ -2,11 +2,11 @@ package com.er.model;
 
 import java.util.Set;
 
-public class User extends AbstractEntity{
+public class User extends AbstractNamedEntity{
     private String email;
     private String password;
     private Set<Role> role;
-    private int vote;
+    private Integer vote;
 
     public User() {
     }
@@ -23,6 +23,9 @@ public class User extends AbstractEntity{
         this.password = password;
         this.role = role;
         this.vote = vote;
+    }
+    public User(User u) {
+        this(u.getId(), u.getName(), u.getEmail(), u.getPassword(), u.getRoles(),u.getVote());
     }
 
     public String getEmail() {
@@ -41,11 +44,11 @@ public class User extends AbstractEntity{
         this.password = password;
     }
 
-    public Set<Role> getRole() {
+    public Set<Role> getRoles() {
         return role;
     }
 
-    public void setRole(Set<Role> role) {
+    public void setRoles(Set<Role> role) {
         this.role = role;
     }
 

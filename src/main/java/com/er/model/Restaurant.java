@@ -3,9 +3,9 @@ package com.er.model;
 import java.util.Arrays;
 import java.util.List;
 
-public class Restaurant extends AbstractEntity{
+public class Restaurant extends AbstractNamedEntity{
     private int countVotes;
-    private List<Dish> dishes;
+    private Menu menu;
 
     public Restaurant() {
     }
@@ -15,22 +15,21 @@ public class Restaurant extends AbstractEntity{
     }
 
     public Restaurant(String name, Dish... dishes) {
-        super(name);
-        this.dishes = Arrays.asList(dishes);
+        this(name, Arrays.asList(dishes));
     }
     public Restaurant(String name, List<Dish> dishes) {
         super(name);
-        this.dishes = dishes;
+        menu = new Menu(dishes);
     }
 
     public Restaurant(int id, String name) {
         super(id, name);
     }
 
-    public Restaurant(int id, String name, int countVotes, List<Dish> dishes) {
+    public Restaurant(int id, String name, int countVotes, Menu menu) {
         super(id, name);
         this.countVotes = countVotes;
-        this.dishes = dishes;
+        this.menu = menu;
     }
 
     public int getCountVotes() {
@@ -41,14 +40,8 @@ public class Restaurant extends AbstractEntity{
         this.countVotes = countVotes;
     }
 
-    public List<Dish> getDishes() {
-        return dishes;
-    }
 
-    public void setDishes(List<Dish> dishes) {
-        this.dishes = dishes;
-    }
-
+/*
     @Override
     public String toString() {
         return "Restaurant{" +
@@ -66,4 +59,5 @@ public class Restaurant extends AbstractEntity{
         }
         return dishesNames.toString();
     }
+*/
 }
