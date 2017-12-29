@@ -1,6 +1,7 @@
 Lunch vote System. Graduation Project.
 =====================================
-###TASK
+ [оригинал задания](https://github.com/JavaWebinar/topjava/blob/doc/doc/graduation.md)
+ ###TASK
 
 #####Design and implement a REST API using Hibernate/Spring/SpringMVC (or Spring-Boot) without frontend.
 
@@ -20,4 +21,3 @@ Lunch vote System. Graduation Project.
 ##### Make sure everything works with latest version that is on github :)
 ##### Asume that your API will be used by a frontend developer to build frontend on top of that.
 
- 

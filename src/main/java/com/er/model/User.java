@@ -6,7 +6,6 @@ public class User extends AbstractNamedEntity{
     private String email;
     private String password;
     private Set<Role> role;
-    private Integer vote;
 
     public User() {
     }
@@ -17,15 +16,14 @@ public class User extends AbstractNamedEntity{
         this.password = password;
     }
 
-    public User(int id, String name, String email, String password, Set<Role> role, int vote) {
+    public User(int id, String name, String email, String password, Set<Role> role) {
         super(id, name);
         this.email = email;
         this.password = password;
         this.role = role;
-        this.vote = vote;
     }
     public User(User u) {
-        this(u.getId(), u.getName(), u.getEmail(), u.getPassword(), u.getRoles(),u.getVote());
+        this(u.getId(), u.getName(), u.getEmail(), u.getPassword(), u.getRoles());
     }
 
     public String getEmail() {
@@ -52,20 +50,12 @@ public class User extends AbstractNamedEntity{
         this.role = role;
     }
 
-    public int getVote() {
-        return vote;
-    }
-
-    public void setVote(int vote) {
-        this.vote = vote;
-    }
 
     @Override
     public String toString() {
         return "User{" +
                 "email='" + email + '\'' +
                 ", role=" + role +
-                ", vote=" + vote +
                 ", id=" + id +
                 ", name='" + name + '\'' +
                 '}';

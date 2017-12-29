@@ -1,33 +1,37 @@
 package com.er.model;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Menu extends AbstractEntity {
 
     private LocalDateTime dateTime;
-    private List<Dish> menu = new CopyOnWriteArrayList<>();
+    private Restaurant restaurant;
+    private List<Dish> dishes = new CopyOnWriteArrayList<>();
     private Integer votes;
 
     public Menu() {
     }
 
-    public Menu(List<Dish> menu) {
-        this(null, LocalDateTime.now(), menu);
+    public Menu(List<Dish> dishes) {
+        this(null, LocalDateTime.now(), dishes);
     }
-
-    public Menu(Integer id, LocalDateTime dateTime, List<Dish> menu) {
+    public Menu(Dish... dishes) {
+        this(Arrays.asList(dishes));
+    }
+    public Menu(Integer id, LocalDateTime dateTime, List<Dish> dishes) {
 
         super(id);
         this.dateTime = dateTime;
-        this.menu = menu;
+        this.dishes = dishes;
     }
 
-    public Menu(int id, LocalDateTime dateTime, List<Dish> menu, Integer votes) {
+    public Menu(int id, LocalDateTime dateTime, List<Dish> dishes, Integer votes) {
         super(id);
         this.dateTime = dateTime;
-        this.menu = menu;
+        this.dishes = dishes;
         this.votes = votes;
     }
 
@@ -39,12 +43,12 @@ public class Menu extends AbstractEntity {
         this.dateTime = dateTime;
     }
 
-    public List<Dish> getMenu() {
-        return menu;
+    public List<Dish> getDishes() {
+        return dishes;
     }
 
-    public void setMenu(List<Dish> menu) {
-        this.menu = menu;
+    public void setDishes(List<Dish> dishes) {
+        this.dishes = dishes;
     }
 
     public Integer getVotes() {
