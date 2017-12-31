@@ -9,9 +9,10 @@ public class Menu extends AbstractEntity {
 
     private LocalDateTime dateTime;
     private Restaurant restaurant;
+    //strategy to mapping 12.00
+    //https://www.youtube.com/watch?v=aXAdLcnniEs&index=4&list=PLoij6udfBnci05Oh7IRN-KU3PCjLeYtez
     private List<Dish> dishes = new CopyOnWriteArrayList<>();
     private Integer votes;
-
     public Menu() {
     }
 

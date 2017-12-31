@@ -1,14 +1,24 @@
 package com.er.repository;
 
-import com.er.model.Dish;
+import com.er.model.Menu;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 public interface MenuRepository {
+    // null if updated meal do not belong to userId
+    Menu save(Menu meal, int userId);
 
-    List<Dish> getMenu(int RestaurantId, LocalDateTime date);
+    // false if meal do not belong to userId
+    boolean delete(int id, int userId);
 
-    int getVotesForMenu(int RestaurantId, LocalDateTime date);
+    // null if meal do not belong to userId
+    Menu get(int id, int userId);
 
+    // ORDERED dateTime desc
+    List<Menu> getAll(int userId);
+
+    // ORDERED dateTime desc
+    List<Menu> getBetween(LocalDateTime startDate, LocalDateTime endDate, int userId);
 }
+

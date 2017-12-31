@@ -1,6 +1,8 @@
 package com.er.model;
 
-public abstract class AbstractEntity {
+import org.springframework.data.domain.Persistable;
+
+public abstract class AbstractEntity implements Persistable<Integer> {
     protected Integer id;
 
     public AbstractEntity() {
@@ -9,15 +11,18 @@ public abstract class AbstractEntity {
     protected AbstractEntity(Integer id) {
         this.id = id;
     }
-
-    public int getId() {
+    @Override
+    public Integer getId() {
         return id;
     }
 
     public void setId(int id) {
         this.id = id;
     }
-
+    @Override
+    public boolean isNew() {
+        return this.id == null;
+    }
 
     @Override
     public String toString() {
