@@ -2,17 +2,31 @@ package com.example.model;
 
 import com.example.HasId;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
-public class Vote implements HasId {
+@NamedQueries({
+        @NamedQuery(name = Vote.ALL, query = "SELECT v FROM Vote v"),
+        @NamedQuery(name = Vote.ALL_FOR_RESTAURANT, query = "SELECT v FROM Vote v WHERE v.restaurant.id=:restaurantId"),
+        @NamedQuery(name = Vote.ALL_BY_USER, query = "SELECT v FROM Vote v WHERE v.user.id=:userId")
+})
+@Entity
+@Table(name = "votes")
+public class Vote extends AbstractBaseEntity {
+    public static final String ALL = "Vote.getAll";
+    public static final String ALL_FOR_RESTAURANT = "Vote.getAllForRestaurant";
+    public static final String ALL_BY_USER = "Vote.getAllByUser";
 
-    private Integer id;
-
+    @Column(name = "vote_time", nullable = false, columnDefinition = "timestamp default now()")
     private LocalDateTime voteTime;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    private Menu menu;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "restaurant_id", nullable = false)
+    private Restaurant restaurant;
 
     public Vote() {
         this.voteTime = LocalDateTime.now();
@@ -22,14 +36,14 @@ public class Vote implements HasId {
         this.id = vote.id;
         this.voteTime = vote.voteTime;
         this.user = vote.user;
-        this.menu = vote.menu;
+        this.restaurant = vote.restaurant;
     }
 
-    public Vote(int id, LocalDateTime dateTime, User user, Menu menu) {
+    public Vote(Integer id, LocalDateTime voteTime, User user, Restaurant restaurant) {
         this.id = id;
-        this.voteTime = dateTime;
+        this.voteTime = voteTime;
         this.user = user;
-        this.menu = menu;
+        this.restaurant = restaurant;
     }
 
     public boolean isNew() {

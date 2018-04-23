@@ -1,42 +1,37 @@
 package com.example.model;
 
-import com.example.HasId;
-
-import javax.persistence.FetchType;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class Menu implements HasId {
+public class Menu extends AbstractBaseEntity {
 
-    private Integer id;
-
-    private LocalDateTime dateTime;
+    private LocalDateTime date;
 
     @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "restaurant_id", nullable = false)
     private Restaurant restaurant;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "menu_dish_link", joinColumns = {
+            @JoinColumn(name = "menu_id", nullable = false, updatable = false) },
+            inverseJoinColumns = {
+            @JoinColumn(name = "dish_id", nullable = false, updatable = false) })
     private List<Dish> dishes;
 
-    @OneToMany
-    private List<Vote> votes;
 
     public Menu() {
     }
 
     public Menu(Menu menu) {
-        this(menu.getId(), menu.getDateTime(), menu.getRestaurant(), menu.getDishes(), menu.getVotes());
+        this(menu.getId(), menu.getDateTime(), menu.getRestaurant(), menu.getDishes());
     }
 
-    public Menu(Integer id, LocalDateTime dateTime, Restaurant restaurant, List<Dish> dishes, List<Vote> votes) {
+    public Menu(Integer id, LocalDateTime date, Restaurant restaurant, List<Dish> dishes) {
         this.id = id;
-        this.dateTime = dateTime;
+        this.date = date;
         this.restaurant = restaurant;
         this.dishes = dishes;
-        this.votes = votes;
     }
 
     @Override
@@ -50,11 +45,11 @@ public class Menu implements HasId {
     }
 
     public LocalDateTime getDateTime() {
-        return dateTime;
+        return date;
     }
 
     public void setDateTime(LocalDateTime dateTime) {
-        this.dateTime = dateTime;
+        this.date = dateTime;
     }
 
     public Restaurant getRestaurant() {
@@ -71,13 +66,5 @@ public class Menu implements HasId {
 
     public void setDishes(List<Dish> dishes) {
         this.dishes = dishes;
-    }
-
-    public List<Vote> getVotes() {
-        return votes;
-    }
-
-    public void setVotes(List<Vote> votes) {
-        this.votes = votes;
     }
 }
