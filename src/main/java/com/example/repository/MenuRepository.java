@@ -1,6 +1,6 @@
-package com.er.repository;
+package com.example.repository;
 
-import com.er.model.Menu;
+import com.example.model.Menu;
 
 import java.time.LocalDateTime;
 import java.util.List;

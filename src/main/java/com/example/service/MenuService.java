@@ -1,7 +1,7 @@
-package com.er.service;
+package com.example.service;
 
-import com.er.model.Menu;
-import com.er.util.NotFoundException;
+import com.example.model.Menu;
+import com.example.util.NotFoundException;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

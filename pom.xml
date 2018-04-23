@@ -3,45 +3,36 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+
+    <groupId>com.example</groupId>
+    <artifactId>lunch-vote</artifactId>
+    <packaging>war</packaging>
+    <version>1.0-SNAPSHOT</version>
+    <name>Vote today Lunch</name>
 
     <properties>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
+        <!--  Spring  -->
+        <spring.version>5.0.2.RELEASE</spring.version>
+        <spring-data-jpa.version>2.0.2.RELEASE</spring-data-jpa.version>
+        <spring-security.version>5.0.0.RELEASE</spring-security.version>
+        <!-- DataBase -->
+        <postgresql.version>42.1.4</postgresql.version>
+        <!-- Hibernate -->
+        <hibernate.version>5.2.12.Final</hibernate.version>
+        <hibernate-validator.version>6.0.7.Final</hibernate-validator.version>
+        <javax-el.version>3.0.1-b08</javax-el.version>
         <!--  Servlet -->
         <tomcat.version>8.5.15</tomcat.version>
-        <!--  Spring  -->
-        <spring.version>5.0.1.RELEASE</spring.version>
-        <spring-data-jpa.version>2.0.2.RELEASE</spring-data-jpa.version>
         <!--  Logging -->
         <logback.version>1.2.3</logback.version>
         <slf4j.version>1.7.25</slf4j.version>
-        <!-- DataBase -->
-        <postgresql.version>42.1.4</postgresql.version>
         <!--   Tests  -->
         <junit.version>4.12</junit.version>
-        <!-- Hibernate -->
-        <hibernate.version>5.2.12.Final</hibernate.version>
-        <hibernate-validator.version>6.0.5.Final</hibernate-validator.version>
-        <javax-el.version>3.0.1-b08</javax-el.version>
     </properties>
-
-    <groupId>com.er</groupId>
-    <artifactId>lunch-vote</artifactId>
-    <version>1.0-SNAPSHOT</version>
 
     <dependencies>
         <!-- Spring -->
@@ -66,6 +57,14 @@
             <artifactId>spring-orm</artifactId>
             <version>${spring.version}</version>
         </dependency>
+
+        <!--- Hibernate -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>${hibernate.version}</version>
+        </dependency>
+
         <!-- Logging -->
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -91,6 +90,7 @@
             <version>${logback.version}</version>
             <scope>runtime</scope>
         </dependency>
+
         <!--    Web    -->
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -104,5 +104,18 @@
             <version>1.2</version>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

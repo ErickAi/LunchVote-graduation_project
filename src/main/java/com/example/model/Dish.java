@@ -1,17 +1,24 @@
-package com.er.model;
+package com.example.model;
+
+import javax.persistence.FetchType;
+import javax.persistence.ManyToMany;
+import java.util.List;
 
 public class Dish extends AbstractNamedEntity {
+
     private Integer price;
+
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "dishes")
+    private List<Menu> menu;
 
     public Dish() {
     }
 
-    public Dish(String name, Integer price) {
-        super(name);
-        this.price = price;
+    public Dish(Dish dish) {
+        this(dish.getId(), dish.getName(), dish.getPrice());
     }
 
-    public Dish(int id, String name, Integer price) {
+    public Dish(Integer id, String name, Integer price) {
         super(id, name);
         this.price = price;
     }

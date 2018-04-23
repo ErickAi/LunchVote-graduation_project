@@ -1,8 +1,8 @@
-package com.er.model;
+package com.example.model;
 
 import java.util.Set;
 
-public class User extends AbstractNamedEntity{
+public class User extends AbstractNamedEntity {
     private String email;
     private String password;
     private Set<Role> role;
@@ -10,18 +10,13 @@ public class User extends AbstractNamedEntity{
     public User() {
     }
 
-    public User(String name, String email, String password) {
-        super(name);
-        this.email = email;
-        this.password = password;
-    }
-
-    public User(int id, String name, String email, String password, Set<Role> role) {
+    public User(Integer id, String name, String email, String password, Set<Role> role) {
         super(id, name);
         this.email = email;
         this.password = password;
         this.role = role;
     }
+
     public User(User u) {
         this(u.getId(), u.getName(), u.getEmail(), u.getPassword(), u.getRoles());
     }

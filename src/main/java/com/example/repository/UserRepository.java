@@ -1,6 +1,6 @@
-package com.er.repository;
+package com.example.repository;
 
-import com.er.model.User;
+import com.example.model.User;
 
 import java.util.List;
 

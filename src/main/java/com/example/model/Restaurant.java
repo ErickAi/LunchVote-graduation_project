@@ -1,15 +1,15 @@
-package com.er.model;
+package com.example.model;
 
 public class Restaurant extends AbstractNamedEntity {
 
     public Restaurant() {
     }
 
-    public Restaurant(String name) {
-        super(name);
+    public Restaurant(Restaurant restaurant) {
+        this(restaurant.getId(), restaurant.getName());
     }
 
-    public Restaurant(int id, String name) {
+    public Restaurant(Integer id, String name) {
         super(id, name);
     }
 

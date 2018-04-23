@@ -1,8 +1,8 @@
-package com.er.service;
+package com.example.service;
 
 
-import com.er.model.User;
-import com.er.util.NotFoundException;
+import com.example.model.User;
+import com.example.util.NotFoundException;
 
 import java.util.List;
 
