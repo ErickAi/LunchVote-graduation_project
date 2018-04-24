@@ -1,4 +1,4 @@
-package com.example.model;
+package com.example.domain;
 
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Cache;

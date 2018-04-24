@@ -1,4 +1,4 @@
-package com.example.model;
+package com.example.domain;
 
 
 import com.example.HasId;

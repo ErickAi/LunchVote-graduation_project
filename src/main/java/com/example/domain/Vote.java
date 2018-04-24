@@ -1,6 +1,4 @@
-package com.example.model;
-
-import com.example.HasId;
+package com.example.domain;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
