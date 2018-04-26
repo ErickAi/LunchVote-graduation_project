@@ -76,6 +76,15 @@ public class User extends AbstractNamedEntity {
         this.role = role;
     }
 
+    public Date getRegistered() {
+        return registered;
+    }
+
+    public void setRegistered(Date registered) {
+        this.registered = registered;
+    }
+
+
 
     @Override
     public String toString() {
