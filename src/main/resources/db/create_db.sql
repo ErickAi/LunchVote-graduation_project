@@ -1,6 +1,6 @@
-DROP DATABASE IF EXISTS lunch_vote;
-CREATE DATABASE lunch_vote;
-\c lunch_vote;
+-- DROP DATABASE IF EXISTS lunch_voting;
+-- CREATE DATABASE lunch_voting;
+-- \c lunch_vote;
 
 DROP TABLE IF EXISTS users CASCADE;
 DROP TABLE IF EXISTS user_roles;
@@ -19,7 +19,9 @@ CREATE TABLE users
   name       VARCHAR NOT NULL,
   email      VARCHAR NOT NULL,
   password   VARCHAR NOT NULL,
-  registered TIMESTAMP           DEFAULT now()
+  registered TIMESTAMP           DEFAULT now(),
+  enabled    BOOL                DEFAULT TRUE
+
 );
 CREATE UNIQUE INDEX users_unique_email_idx ON users (email);
 

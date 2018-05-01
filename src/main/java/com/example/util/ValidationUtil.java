@@ -1,8 +1,14 @@
 package com.example.util;
 
 
+import com.example.HasId;
 import com.example.domain.AbstractBaseEntity;
 import com.example.util.exception.NotFoundException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+
+import java.util.StringJoiner;
 
 public class ValidationUtil {
 
@@ -34,12 +40,12 @@ public class ValidationUtil {
         }
     }
 
-    public static void assureIdConsistent(AbstractBaseEntity entity, int id) {
+    public static void assureIdConsistent(HasId bean, int id) {
 //      http://stackoverflow.com/a/32728226/548473
-        if (entity.isNew()) {
-            entity.setId(id);
-        } else if (entity.getId() != id) {
-            throw new IllegalArgumentException(entity + " must be with id=" + id);
+        if (bean.isNew()) {
+            bean.setId(id);
+        } else if (bean.getId() != id) {
+            throw new IllegalArgumentException(bean + " must be with id=" + id);
         }
     }
 
@@ -53,4 +59,18 @@ public class ValidationUtil {
         }
         return result;
     }
+
+    public static ResponseEntity<String> getErrorResponse(BindingResult result) {
+        StringJoiner joiner = new StringJoiner("<br>");
+        result.getFieldErrors().forEach(
+                fe -> {
+                    String msg = fe.getDefaultMessage();
+                    if (!msg.startsWith(fe.getField())) {
+                        msg = fe.getField() + ' ' + msg;
+                    }
+                    joiner.add(msg);
+                });
+        return new ResponseEntity<>(joiner.toString(), HttpStatus.UNPROCESSABLE_ENTITY);
+    }
+
 }

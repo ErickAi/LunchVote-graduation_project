@@ -3,10 +3,10 @@ package com.example.domain;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.springframework.util.CollectionUtils;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.Set;
+import java.util.*;
 
 @NamedQueries({
         @NamedQuery(name = User.DELETE, query = "DELETE FROM User u WHERE u.id=:id"),
@@ -30,26 +30,37 @@ public class User extends AbstractNamedEntity {
     @Column(name = "registered", columnDefinition = "timestamp default now()")
     protected Date registered = new Date();
 
+
+    @Column(name = "enabled", nullable = false)
+    protected boolean enabled = true;
+
+
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @Enumerated(EnumType.STRING)
     @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
     @Column(name = "role")
     @ElementCollection(fetch = FetchType.EAGER)
     @BatchSize(size = 200)
-    private Set<Role> role;
+    private Set<Role> roles;
 
     public User() {
     }
 
-    public User(Integer id, String name, String email, String password, Set<Role> role) {
+    public User(User u) {
+        this(u.getId(), u.getName(), u.getEmail(), u.getPassword(), u.isEnabled(), u.getRegistered(), u.getRoles());
+    }
+
+    public User(Integer id, String name, String email, String password, Role role, Role... roles) {
+        this(id, name, email, password, true, new Date(), EnumSet.of(role, roles));
+    }
+
+    public User(Integer id, String name, String email, String password, boolean enabled, Date registered, Collection<Role> roles) {
         super(id, name);
         this.email = email;
         this.password = password;
-        this.role = role;
-    }
-
-    public User(User u) {
-        this(u.getId(), u.getName(), u.getEmail(), u.getPassword(), u.getRoles());
+        this.enabled = enabled;
+        this.registered = registered;
+        setRoles(roles);
     }
 
     public String getEmail() {
@@ -69,11 +80,11 @@ public class User extends AbstractNamedEntity {
     }
 
     public Set<Role> getRoles() {
-        return role;
+        return roles;
     }
 
-    public void setRoles(Set<Role> role) {
-        this.role = role;
+    public void setRoles(Collection<Role> roles) {
+        this.roles = CollectionUtils.isEmpty(roles) ? Collections.emptySet() : EnumSet.copyOf(roles);
     }
 
     public Date getRegistered() {
@@ -84,13 +95,19 @@ public class User extends AbstractNamedEntity {
         this.registered = registered;
     }
 
+    public boolean isEnabled() {
+        return enabled;
+    }
 
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
 
     @Override
     public String toString() {
         return "User{" +
                 "email='" + email + '\'' +
-                ", role=" + role +
+                ", roles=" + roles +
                 ", id=" + id +
                 ", name='" + name + '\'' +
                 '}';
