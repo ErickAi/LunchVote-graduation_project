@@ -1,12 +1,14 @@
 package com.example.domain;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
+@Entity
+@Table(name = "menus")
 public class Menu extends AbstractBaseEntity {
 
-    private LocalDateTime date;
+    private LocalDate date;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "restaurant_id", nullable = false)
@@ -19,15 +21,17 @@ public class Menu extends AbstractBaseEntity {
             @JoinColumn(name = "dish_id", nullable = false, updatable = false) })
     private List<Dish> dishes;
 
+    @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY, mappedBy = "menu")
+    private List<Vote> votes;
 
     public Menu() {
     }
 
     public Menu(Menu menu) {
-        this(menu.getId(), menu.getDateTime(), menu.getRestaurant(), menu.getDishes());
+        this(menu.getId(), menu.getDate(), menu.getRestaurant(), menu.getDishes());
     }
 
-    public Menu(Integer id, LocalDateTime date, Restaurant restaurant, List<Dish> dishes) {
+    public Menu(Integer id, LocalDate date, Restaurant restaurant, List<Dish> dishes) {
         this.id = id;
         this.date = date;
         this.restaurant = restaurant;
@@ -44,12 +48,12 @@ public class Menu extends AbstractBaseEntity {
         this.id = id;
     }
 
-    public LocalDateTime getDateTime() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDateTime(LocalDateTime dateTime) {
-        this.date = dateTime;
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 
     public Restaurant getRestaurant() {
