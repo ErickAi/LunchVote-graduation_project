@@ -19,11 +19,11 @@ public class ValidationUtil {
         checkNotFound(found, "id=" + id);
     }
 
-    public static <T> T checkNotFoundWithId(T object, int id) {
+    public static <T extends AbstractBaseEntity> T checkNotFoundWithId(T object, int id) {
         return checkNotFound(object, "id=" + id);
     }
 
-    public static <T> T checkNotFound(T object, String msg) {
+    public static <T extends AbstractBaseEntity> T checkNotFound(T object, String msg) {
         checkNotFound(object != null, msg);
         return object;
     }

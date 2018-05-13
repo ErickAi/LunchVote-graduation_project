@@ -1,34 +1,35 @@
 package com.example.domain;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@Table(name = "restaurants")
 public class Restaurant extends AbstractNamedEntity {
 
-    public Restaurant() {
-    }
     @Column(name = "description", nullable = false)
     private String description;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "restaurant")
-    protected List<Menu> menus = new ArrayList<>();
+    protected List<Menu> menus;
 
-    @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY, mappedBy = "menu")
-    private List<Vote> votes = new ArrayList<>();
-
-    public Restaurant(Restaurant restaurant) {
-        this(restaurant.getId(), restaurant.getName(), restaurant.getDescription(), restaurant.getMenus(), restaurant.getVotes());
+    public Restaurant() {
+    }
+    public Restaurant(Integer id, String name, String description) {
+        super(id, name);
+        this.description = description;
+        this.menus = new ArrayList<>();
     }
 
-    public Restaurant(Integer id, String name, String description, List<Menu> menus, List<Vote> votes) {
+    public Restaurant(Restaurant restaurant) {
+        this(restaurant.getId(), restaurant.getName(), restaurant.getDescription(), restaurant.getMenus());
+    }
+
+    public Restaurant(Integer id, String name, String description, List<Menu> menus) {
         super(id, name);
         this.description = description;
         this.menus = menus;
-        this.votes = votes;
     }
 
     public String getDescription() {
@@ -45,14 +46,6 @@ public class Restaurant extends AbstractNamedEntity {
 
     public void setMenus(List<Menu> menus) {
         this.menus = menus;
-    }
-
-    public List<Vote> getVotes() {
-        return votes;
-    }
-
-    public void setVotes(List<Vote> votes) {
-        this.votes = votes;
     }
 
     @Override

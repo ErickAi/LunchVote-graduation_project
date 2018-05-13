@@ -1,47 +1,39 @@
 package com.example.domain;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
-@NamedQueries({
-        @NamedQuery(name = Vote.ALL, query = "SELECT v FROM Vote v"),
-        @NamedQuery(name = Vote.ALL_FOR_RESTAURANT, query = "SELECT v FROM Vote v WHERE v.restaurant.id=:restaurantId"),
-        @NamedQuery(name = Vote.ALL_BY_USER, query = "SELECT v FROM Vote v WHERE v.user.id=:userId")
-})
 @Entity
 @Table(name = "votes")
 public class Vote extends AbstractBaseEntity {
-    public static final String ALL = "Vote.getAll";
-    public static final String ALL_FOR_RESTAURANT = "Vote.getAllForRestaurant";
-    public static final String ALL_BY_USER = "Vote.getAllByUser";
-
-    @Column(name = "vote_time", nullable = false, columnDefinition = "timestamp default now()")
-    private LocalDateTime voteTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "restaurant_id", nullable = false)
-    private Restaurant restaurant;
+    @JoinColumn(name = "menu_id", nullable = false)
+    private Menu menu;
+
+    @Column(name = "date", nullable = false)
+    private LocalDate date;
 
     public Vote() {
-        this.voteTime = LocalDateTime.now();
     }
 
     public Vote(Vote vote) {
-        this.id = vote.id;
-        this.voteTime = vote.voteTime;
-        this.user = vote.user;
-        this.restaurant = vote.restaurant;
+        this(vote.getId(), vote.getUser(), vote.getMenu(), vote.getDate());
     }
 
-    public Vote(Integer id, LocalDateTime voteTime, User user, Restaurant restaurant) {
+    public Vote(User user, Menu menu, LocalDate date) {
+        this(null, user, menu, date);
+    }
+
+    public Vote(Integer id, User user, Menu menu, LocalDate date) {
         this.id = id;
-        this.voteTime = voteTime;
         this.user = user;
-        this.restaurant = restaurant;
+        this.menu = menu;
+        this.date = date;
     }
 
     public boolean isNew() {
@@ -49,13 +41,32 @@ public class Vote extends AbstractBaseEntity {
     }
 
     @Override
-    public Integer getId() {
-        return id;
-    }
-
-    @Override
     public void setId(Integer id) {
 
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Menu getMenu() {
+        return menu;
+    }
+
+    public void setMenu(Menu menu) {
+        this.menu = menu;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 
     @Override

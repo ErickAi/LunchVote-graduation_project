@@ -31,8 +31,8 @@ public class User extends AbstractNamedEntity {
     protected Date registered = new Date();
 
 
-    @Column(name = "enabled", nullable = false)
-    protected boolean enabled = true;
+    @Column(name = "enabled", nullable = false, columnDefinition = "BOOLEAN DEFAULT TRUE")
+    protected boolean enabled;
 
 
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -106,10 +106,10 @@ public class User extends AbstractNamedEntity {
     @Override
     public String toString() {
         return "User{" +
-                "email='" + email + '\'' +
-                ", roles=" + roles +
-                ", id=" + id +
+                "id=" + id +
                 ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", roles=" + roles +
                 '}';
     }
 }

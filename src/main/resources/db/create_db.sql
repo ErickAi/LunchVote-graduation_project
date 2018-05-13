@@ -55,10 +55,10 @@ CREATE TABLE dishes (
 CREATE TABLE votes (
   id            INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
   user_id       INTEGER            NOT NULL,
-  restaurant_id INTEGER            NOT NULL,
-  vote_time     TIMESTAMP DEFAULT now(),
+  menu_id       INTEGER            NOT NULL,
+  date          TIMESTAMP DEFAULT now(),
   FOREIGN KEY (user_id)       REFERENCES users (id) ON DELETE CASCADE,
-  FOREIGN KEY (restaurant_id) REFERENCES menus (id) ON DELETE CASCADE
+  FOREIGN KEY (menu_id) REFERENCES menus (id) ON DELETE CASCADE
 );
 
 CREATE TABLE menu_dish_link (
