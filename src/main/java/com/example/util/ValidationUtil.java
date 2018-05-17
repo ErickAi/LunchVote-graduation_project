@@ -12,15 +12,10 @@ import java.util.StringJoiner;
 
 public class ValidationUtil {
 
+    public static final String NOT_FOUND_WITH = "Not found entity with ";
+    public static final String NOT_FOUND_WITH_ID = "Not found entity with id= ";
+
     private ValidationUtil() {
-    }
-
-    public static void checkNotFoundWithId(boolean found, int id) {
-        checkNotFound(found, "id=" + id);
-    }
-
-    public static <T extends AbstractBaseEntity> T checkNotFoundWithId(T object, int id) {
-        return checkNotFound(object, "id=" + id);
     }
 
     public static <T extends AbstractBaseEntity> T checkNotFound(T object, String msg) {
@@ -30,7 +25,7 @@ public class ValidationUtil {
 
     public static void checkNotFound(boolean found, String msg) {
         if (!found) {
-            throw new NotFoundException("Not found entity with " + msg);
+            throw new NotFoundException(msg);
         }
     }
 
