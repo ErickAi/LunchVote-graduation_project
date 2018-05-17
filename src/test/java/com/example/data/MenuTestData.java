@@ -1,6 +1,7 @@
 package com.example.data;
 
 import com.example.domain.Menu;
+import com.example.dto.MenuTo;
 
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -20,28 +21,33 @@ public class MenuTestData {
 
 
     public static final Menu PAST_VOTE_EXIST_MENU = new Menu(PAST_VOTE_EXIST_MENU_ID,
-            LocalDate.of(2000, 1, 1), RESTAURANT_1, Arrays.asList(DISH_1, DISH_4, DISH_5, DISH_8));
+            LocalDate.now().minusDays(1), RESTAURANT_1, Arrays.asList(DISH_01, DISH_02, DISH_03));
     public static final Menu PAST_NOT_VOTED_MENU = new Menu(PAST_NOT_VOTED_MENU_ID,
-            LocalDate.of(2000, 1, 2), RESTAURANT_2, Arrays.asList(DISH_2, DISH_4, DISH_6, DISH_9));
+            LocalDate.now().minusDays(1), RESTAURANT_2, Arrays.asList(DISH_04, DISH_05, DISH_06));
 
-    public static final Menu FUTURE_VOTE_EXIST_MENU = new Menu(FUTURE_VOTE_EXIST_MENU_ID,
-            LocalDate.of(3000, 1, 1), RESTAURANT_1, Arrays.asList(DISH_3, DISH_4, DISH_7, DISH_10));
-    public static final Menu FUTURE_FOR_UPDATE_MENU = new Menu(FUTURE_FOR_UPDATE_MENU_ID,
-            LocalDate.of(3000, 1, 1), RESTAURANT_2, Arrays.asList(DISH_2, DISH_4, DISH_7, DISH_9));
+    public static final Menu CURRENT_VOTE_EXIST_MENU = new Menu(FUTURE_VOTE_EXIST_MENU_ID,
+            LocalDate.now(), RESTAURANT_1, Arrays.asList(DISH_07, DISH_08, DISH_09));
+    public static final Menu CURRENT_NOT_VOTED_MENU = new Menu(FUTURE_FOR_UPDATE_MENU_ID,
+            LocalDate.now(), RESTAURANT_2, Arrays.asList(DISH_10, DISH_11, DISH_12));
     public static final Menu FUTURE_NOT_VOTED_MENU = new Menu(FUTURE_NOT_VOTED_MENU_ID,
-            LocalDate.of(3000, 1, 2), RESTAURANT_3, Arrays.asList(DISH_1, DISH_4, DISH_6, DISH_10));
+            LocalDate.now().plusDays(1), RESTAURANT_1, Arrays.asList(DISH_13, DISH_14, DISH_15));
 
 
     public static void assertMatch(Menu actual, Menu expected) {
-        assertThat(actual).isEqualToIgnoringGivenFields(expected, "dishes", "restaurant");
+        assertThat(actual).isEqualToIgnoringGivenFields(expected, "dishes");
     }
 
-    public static void assertMatch(Iterable<Menu> actual, Menu... expected) {
-        assertMatch(actual, Arrays.asList(expected));
+    public static void assertMatch(MenuTo actual, MenuTo expected) {
+        assertThat(actual).isEqualToIgnoringGivenFields(expected, "quantityVotes", "dishes", "votes");
     }
 
-    public static void assertMatch(Iterable<Menu> actual, Iterable<Menu> expected) {
-        assertThat(actual).usingElementComparatorOnFields("id", "date")
+    public static void assertMatchVoteList(Iterable<Menu> actual, Iterable<Menu> expected) {
+        assertThat(actual).usingElementComparatorOnFields("id", "date", "restaurant")
+                .isEqualTo(expected);
+    }
+
+    public static void assertMatch(Iterable<MenuTo> actual, Iterable<MenuTo> expected) {
+        assertThat(actual).usingElementComparatorOnFields("id", "date", "restaurant")
                 .isEqualTo(expected);
     }
 }
