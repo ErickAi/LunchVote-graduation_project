@@ -3,7 +3,6 @@ DELETE FROM user_roles;
 DELETE FROM restaurants;
 DELETE FROM dishes;
 DELETE FROM votes;
-DELETE FROM menu_dish_link;
 
 
 ALTER SEQUENCE global_seq RESTART WITH 100000;
@@ -18,35 +17,36 @@ INSERT INTO user_roles (role, user_id) VALUES
   ('ROLE_USER', 100001);
 
 INSERT INTO restaurants (id, name, description) VALUES
-  (10000, 'Ginza', 'Address: Aptekarskiy Ave., 16, St. Petersburg 197022, Russia.'),
-  (10001, 'Mansarda', 'Address: Pochtamtskaya St., 3-5, St. Petersburg 190000, Russia.'),
-  (10002, 'Terrassa', 'Address: Kazanskaya St., 3A, St. Petersburg 191186, Russia');
+  (10000, 'Mansarda', 'Address: Pochtamtskaya St., 3-5, St. Petersburg 190000, Russia.'),
+  (10001, 'Terrassa', 'Address: Kazanskaya St., 3A, St. Petersburg 191186, Russia');
 
 INSERT INTO menus (id, restaurant_id, date) VALUES
-  (1000, 10000, '2000-01-01 00:00:00'),
-  (1001, 10001, '2000-01-02 00:00:00'),
-  (1002, 10000, '3000-01-01 00:00:00'),
-  (1003, 10001, '3000-01-01 00:00:00'),
-  (1004, 10002, '3000-01-02 00:00:00');
+  (1000, 10000, 'yesterday'),  --past vote exist (HSQLDB -  CURRENT_DATE - '1' DAY)
+  (1001, 10001, 'yesterday'),  --past not voted
+  (1002, 10000, CURRENT_DATE), --future vote exist
+  (1003, 10001, CURRENT_DATE), --future for update
+  (1004, 10000, 'tomorrow');   --future not voted
 
-INSERT INTO dishes (id, name, price) VALUES
-  (100, 'Burger', 200),
-  (101, 'Nuggets', 50),
-  (102, 'Sandwich', 120),
-  (103, 'Salad', 150),
-  (104, 'Coffee', 160),
-  (105, 'Tea', 109),
-  (106, 'Cola', 130),
-  (107, 'Chocolate', 170),
-  (108, 'Cheesecake', 180),
-  (109, 'Ice cream', 160);
+INSERT INTO dishes (id, name, price, menu_id) VALUES
+  (100, 'Burger',   200, 1000), --past vote exist
+  (101, 'Coffee',   160, 1000),
+  (102, 'Ice cream',160, 1000),
+  (103, 'Nuggets',  160, 1001), --past not voted
+  (104, 'Tea',      110, 1001),
+  (105,'Cheesecake',180, 1001),
 
-INSERT INTO menu_dish_link (menu_id, dish_id) VALUES
-  (1000, 100), (1000, 103), (1000, 104), (1000, 107),
-  (1001, 101), (1001, 103), (1001, 105), (1001, 108),
-  (1002, 102), (1002, 103), (1002, 106), (1002, 109),
-  (1003, 101), (1003, 103), (1003, 106), (1003, 108),
-  (1004, 100), (1004, 103), (1004, 105), (1004, 109);
+  (106, 'Burger',   200, 1002), --future vote exist
+  (107, 'Coffee',   160, 1002),
+  (108, 'Ice cream',160, 1002),
+
+  (109, 'Sandwich', 120, 1003), --future for update
+  (110, 'Cola',     130, 1003),
+  (111, 'Chocolate',170, 1003),
+
+  (112, 'Nuggets',  160, 1004), --future not voted
+  (113, 'Tea',      110, 1004),
+  (114,'Cheesecake',180, 1004);
+;
 INSERT INTO votes (user_id, menu_id, date) VALUES
-  (100001, 1000, '2000-01-01 00:00:00'),
-  (100001, 1002, '3000-01-01 00:00:00');
+  (100001, 1000, 'yesterday'),
+  (100001, 1002, CURRENT_DATE);

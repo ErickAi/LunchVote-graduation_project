@@ -1,34 +1,37 @@
 package com.example.domain;
 
 import javax.persistence.*;
-import java.util.List;
 
-@NamedQueries({
-        @NamedQuery(name = Dish.ALL, query = "SELECT d FROM Dish d"),
-        @NamedQuery(name = Dish.DELETE, query = "DELETE FROM Dish d WHERE d.id=:id"),
-})
 @Entity
 @Table(name = "dishes")
 public class Dish extends AbstractNamedEntity {
-    public static final String ALL = "Dish.getAll";
-    public static final String DELETE = "Dish.delete";
 
     @Column(name = "price", nullable = false)
     private Integer price;
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "dishes")
-    private List<Menu> menus;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "menu_id", nullable = false)
+    private Menu menu;
 
     public Dish() {
     }
 
-    public Dish(Dish dish) {
-        this(dish.getId(), dish.getName(), dish.getPrice(), dish.getMenu());
+    public Dish(String name, Integer price) {
+        this(null, name, price);
     }
 
-    public Dish(Integer id, String name, Integer price, List<Menu> menus) {
+    public Dish(Integer id, String name, Integer price) {
         super(id, name);
         this.price = price;
+    }
+
+    public Dish(Integer id, String name, Integer price, Menu menu) {
+        this(id, name, price);
+        this.menu = menu;
+    }
+
+    public Dish(Dish dish) {
+        this(dish.getId(), dish.getName(), dish.getPrice(), dish.getMenu());
     }
 
     public Integer getPrice() {
@@ -39,20 +42,20 @@ public class Dish extends AbstractNamedEntity {
         this.price = price;
     }
 
-    public List<Menu> getMenu() {
-        return menus;
+    public Menu getMenu() {
+        return menu;
     }
 
-    public void setMenu(List<Menu> menu) {
-        this.menus = menu;
+    public void setMenu(Menu menu) {
+        this.menu = menu;
     }
 
     @Override
     public String toString() {
         return "Dish{" +
+                name +
                 ", id=" + id +
-                ", name='" + name + '\'' +
-                "price=" + price +
+                ", price=" + price +
                 '}';
     }
 }
