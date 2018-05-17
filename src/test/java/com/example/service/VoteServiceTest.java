@@ -5,83 +5,47 @@ import com.example.dto.VoteTo;
 import com.example.util.exception.NotFoundException;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.Collection;
 
-import static com.example.data.MenuTestData.*;
-import static com.example.data.UserTestData.USER;
+import static com.example.data.MenuTestData.CURRENT_NOT_VOTED_MENU;
+import static com.example.data.MenuTestData.FUTURE_NOT_VOTED_MENU;
 import static com.example.data.UserTestData.USER_ID;
 import static com.example.data.VoteTestData.*;
-import static com.example.data.VoteTestData.assertMatch;
 
 public class VoteServiceTest extends AbstractServiceTest {
 
     @Autowired
-    protected VoteService service;
+    private VoteService service;
+
 
     @Test
-    public void getAll() {
-        Collection<Vote> all = service.getAll();
-        assertMatch(all, PAST_VOTE, FUTURE_VOTE);
-    }
-
-    @Test
-    @Transactional
     public void getForUserAndDate() {
         Vote vote = service.getForUserAndDate(USER_ID, PAST_VOTE.getDate()).orElseThrow(() -> new NotFoundException("vote not found"));
         assertMatch(vote, PAST_VOTE);
     }
 
     @Test
-    @Transactional
-    public void expiredUpdate() {
-        VoteTo expired = service.createOrUpdate(USER_ID, PAST_VOTE_EXIST_MENU);
-        assertMatch(expired, UPDATE_EXPIRED_VOTE);
-    }
-
-    @Test
-    @Transactional
-    public void createInThePast() {
-        VoteTo forgotten = service.createOrUpdate(USER_ID, PAST_NOT_VOTED_MENU);
-        assertMatch(forgotten, NEW_PAST_VOTE);
-    }
-
-    @Test
-    @Transactional
     public void allowedUpdate() {
-        VoteTo updated = service.createOrUpdate(USER_ID, FUTURE_FOR_UPDATE_MENU);
-        assertMatch(updated, UPDATED_VOTE);
+        VoteTo voteTo = new VoteTo(USER_ID, CURRENT_NOT_VOTED_MENU);
+        voteTo.setCurrentTime(LocalDate.now().atTime(10,59));
+        System.out.println(voteTo.getCurrentTime());
+        VoteTo updated = service.createOrUpdate(voteTo);
+        assertMatch(updated, voteTo);
     }
 
     @Test
-    @Transactional
+    public void expiredUpdate() {
+        VoteTo voteTo = new VoteTo(USER_ID, CURRENT_NOT_VOTED_MENU);
+        voteTo.setCurrentTime(LocalDate.now().atTime(11, 01));
+        VoteTo expired = service.createOrUpdate(voteTo);
+        assertMatch(expired, new VoteTo(CURRENT_VOTE));
+    }
+
+    @Test
     public void createNewVote() {
-        VoteTo created = service.createOrUpdate(USER_ID, FUTURE_NOT_VOTED_MENU);
-        System.out.println();
-        assertMatch(created, NEW_FUTURE_VOTE);
-    }
-
-    @Test
-    @Transactional
-    public void save() {
-        Vote vote = new Vote(USER, FUTURE_NOT_VOTED_MENU, LocalDate.of(3000, 1, 11));
-        Vote created = service.save(vote);
-        System.out.println(created);
-        assertMatch(created, vote);
-    }
-
-    @Test
-    @Transactional
-    public void update() {
-        Vote vote = new Vote(FUTURE_VOTE);
-        vote.setMenu(FUTURE_FOR_UPDATE_MENU);
-        Vote created = service.save(vote);
-        assertMatch(created, vote);
-    }
-
-    @Test
-    public void delete() {
+        VoteTo voteTo = new VoteTo(USER_ID, FUTURE_NOT_VOTED_MENU);
+        VoteTo created = service.createOrUpdate(voteTo);
+        assertMatch(created, voteTo);
     }
 }

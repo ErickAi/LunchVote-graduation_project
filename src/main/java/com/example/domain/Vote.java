@@ -7,11 +7,11 @@ import java.time.LocalDate;
 @Table(name = "votes")
 public class Vote extends AbstractBaseEntity {
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "menu_id", nullable = false)
     private Menu menu;
 
@@ -22,18 +22,18 @@ public class Vote extends AbstractBaseEntity {
     }
 
     public Vote(Vote vote) {
-        this(vote.getId(), vote.getUser(), vote.getMenu(), vote.getDate());
+        this(vote.getId(), vote.getUser(), vote.getMenu());
     }
 
-    public Vote(User user, Menu menu, LocalDate date) {
-        this(null, user, menu, date);
+    public Vote(User user, Menu menu) {
+        this(null, user, menu);
     }
 
-    public Vote(Integer id, User user, Menu menu, LocalDate date) {
+    public Vote(Integer id, User user, Menu menu) {
         this.id = id;
         this.user = user;
         this.menu = menu;
-        this.date = date;
+        this.date = menu.getDate();
     }
 
     public boolean isNew() {
