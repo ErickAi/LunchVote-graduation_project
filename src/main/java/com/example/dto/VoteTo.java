@@ -18,30 +18,31 @@ public class VoteTo extends BaseTo {
 
     private LocalDateTime currentTime;
 
-    private boolean isExpired;
-
     private boolean updated;
 
 
     public VoteTo() {
     }
 
-    public VoteTo(Vote vote, boolean updated) {
-        this(vote.getId(), vote.getUser().getId(), vote.getMenu(), updated);
+    public VoteTo(Vote vote) {
+        this(vote.getId(), vote.getUser().getId(), vote.getMenu());
     }
 
-    public VoteTo(int userId, Menu menu, boolean updated) {
-        this(null, userId, menu, updated);
+    public VoteTo(VoteTo voteTo) {
+        this(voteTo.getId(), voteTo.getUserId(), voteTo.getMenu());
+        this.updated = voteTo.isUpdated();
     }
 
-    public VoteTo(Integer id, int userId, Menu menu, boolean updated) {
+    public VoteTo(int userId, Menu menu) {
+        this(null, userId, menu);
+    }
+
+    public VoteTo(Integer id, int userId, Menu menu) {
         super(id);
         this.userId = userId;
         this.menu = menu;
         this.date = menu.getDate();
         currentTime = LocalDateTime.now();
-        this.isExpired = currentTime.isAfter(date.atTime(EXPIRED_TIME));
-        this.updated = updated;
     }
 
     public boolean isNew() {
@@ -58,11 +59,19 @@ public class VoteTo extends BaseTo {
     }
 
     public boolean isExpired() {
-        return isExpired;
+        return currentTime.isAfter(date.atTime(EXPIRED_TIME));
     }
 
     public boolean isUpdated() {
         return updated;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public void setUpdated(boolean updated) {
@@ -71,6 +80,10 @@ public class VoteTo extends BaseTo {
 
     public void setCurrentTime(LocalDateTime currentTime) {
         this.currentTime = currentTime;
+    }
+
+    public LocalDateTime getCurrentTime() {
+        return currentTime;
     }
 
     public LocalDate getDate() {
@@ -85,12 +98,12 @@ public class VoteTo extends BaseTo {
     public String toString() {
         return "VoteTo{" +
                 "id=" + id +
+                ", currentTime=" + currentTime +
+                ", isExpired=" + isExpired() +
+                ", updated=" + updated +
                 ", userId=" + userId +
                 ", menu=" + menu +
                 ", date=" + date +
-                ", currentTime=" + currentTime +
-                ", isExpired=" + isExpired +
-                ", updated=" + updated +
                 "}";
     }
 }

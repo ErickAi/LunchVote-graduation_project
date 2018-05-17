@@ -31,7 +31,7 @@ public class VoteRestController {
     @RequestMapping(method = GET)
     public ResponseEntity<Restaurant> current() {
         return service.getForUserAndDate(AuthorizedUser.id(), LocalDate.now())
-                .map(vote -> new ResponseEntity<Restaurant>(vote.getMenu().getRestaurant(), HttpStatus.OK))
+                .map(vote -> new ResponseEntity<>(vote.getMenu().getRestaurant(), HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
@@ -41,8 +41,7 @@ public class VoteRestController {
         if (menu == null || menu.getDate().isBefore(today)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        int userId = AuthorizedUser.id();
-        VoteTo voteTo = service.createOrUpdate(userId, menu);
+        VoteTo voteTo = service.createOrUpdate(new VoteTo(AuthorizedUser.id(), menu));
 
         return new ResponseEntity<>(voteTo.getMenu().getRestaurant(),
                 voteTo.isUpdated() ? HttpStatus.CREATED : (voteTo.isExpired() ? HttpStatus.CONFLICT : HttpStatus.OK));
