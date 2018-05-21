@@ -34,6 +34,7 @@
         <junit.version>4.12</junit.version>
         <!--   Tools  -->
         <ehcache.version>3.4.0</ehcache.version>
+        <jackson.version>2.9.3</jackson.version>
 
     </properties>
 
@@ -55,7 +56,7 @@
             <version>${spring-data-jpa.version}</version>
         </dependency>
 
-        <!--security-->
+        <!--Security-->
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-web</artifactId>
@@ -66,11 +67,11 @@
             <artifactId>spring-security-config</artifactId>
             <version>${spring-security.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-taglibs</artifactId>
-            <version>${spring-security.version}</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.springframework.security</groupId>-->
+            <!--<artifactId>spring-security-taglibs</artifactId>-->
+            <!--<version>${spring-security.version}</version>-->
+        <!--</dependency>-->
 
         <!--Database-->
 <!--
@@ -166,7 +167,24 @@
             <version>1.2</version>
         </dependency>
 
-        <!--Test-->
+        <!--  JSON  -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-hibernate5</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+
+        <!--  Test  -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
