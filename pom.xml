@@ -67,11 +67,6 @@
             <artifactId>spring-security-config</artifactId>
             <version>${spring-security.version}</version>
         </dependency>
-        <!--<dependency>-->
-            <!--<groupId>org.springframework.security</groupId>-->
-            <!--<artifactId>spring-security-taglibs</artifactId>-->
-            <!--<version>${spring-security.version}</version>-->
-        <!--</dependency>-->
 
         <!--Database-->
 <!--
@@ -110,6 +105,12 @@
             <version>${javax-el.version}</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>${hibernate-validator.version}</version>
+        </dependency>
+
 
         <!-- Cache  -->
         <dependency>
@@ -207,7 +208,6 @@
             <artifactId>spring-security-test</artifactId>
             <version>${spring-security.version}</version>
         </dependency>
-
 
     </dependencies>
 

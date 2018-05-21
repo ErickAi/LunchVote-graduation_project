@@ -3,6 +3,7 @@ package com.example.service;
 import com.example.AuthorizedUser;
 import com.example.dao.UserRepository;
 import com.example.domain.User;
+import com.example.dto.UserTo;
 import com.example.util.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
@@ -16,6 +17,7 @@ import org.springframework.util.Assert;
 
 import java.util.List;
 
+import static com.example.util.UserUtil.updateFromTo;
 import static com.example.util.ValidationUtil.*;
 
 @Service("userService")
@@ -57,6 +59,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public void update(User user) {
         Assert.notNull(user, "user must not be null");
         checkNotFound(repository.save(user), NOT_FOUND_WITH_ID + user.getId());
+    }
+
+    @CacheEvict(value = "users", allEntries = true)
+    @Transactional
+    @Override
+    public void update(UserTo userTo) {
+        User user = updateFromTo(get(userTo.getId()), userTo);
+        repository.save(user);
     }
 
     public User getByEmail(String email) throws NotFoundException {
