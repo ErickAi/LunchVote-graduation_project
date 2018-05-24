@@ -38,6 +38,7 @@ CREATE TABLE restaurants (
   name          VARCHAR            NOT NULL,
   description   TEXT               NOT NULL
 );
+CREATE UNIQUE INDEX unique_restaurant ON restaurants (name);
 
 CREATE TABLE menus (
   id            INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
