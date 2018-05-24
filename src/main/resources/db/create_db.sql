@@ -42,9 +42,10 @@ CREATE TABLE restaurants (
 CREATE TABLE menus (
   id            INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
   restaurant_id INTEGER            NOT NULL,
-  date          TIMESTAMP          DEFAULT now(),
+  menu_date     TIMESTAMP          DEFAULT now(),
   FOREIGN KEY (restaurant_id) REFERENCES restaurants (id) ON DELETE CASCADE
 );
+CREATE UNIQUE INDEX unique_menu ON menus (menu_date, restaurant_id);
 
 CREATE TABLE dishes (
   id            INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
@@ -52,12 +53,14 @@ CREATE TABLE dishes (
   price         INTEGER            NOT NULL,
   menu_id       INTEGER            NOT NULL
 );
+CREATE UNIQUE INDEX unique_dish ON dishes (menu_id, name);
 
 CREATE TABLE votes (
   id            INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
   user_id       INTEGER            NOT NULL,
   menu_id       INTEGER            NOT NULL,
-  date          TIMESTAMP DEFAULT now(),
-  FOREIGN KEY (user_id)       REFERENCES users (id) ON DELETE CASCADE,
+  vote_date          TIMESTAMP DEFAULT now(),
+  FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
   FOREIGN KEY (menu_id) REFERENCES menus (id) ON DELETE CASCADE
 );
+CREATE UNIQUE INDEX unique_vote ON votes (user_id, vote_date);

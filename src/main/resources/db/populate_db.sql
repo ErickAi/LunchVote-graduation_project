@@ -17,15 +17,16 @@ INSERT INTO user_roles (role, user_id) VALUES
   ('ROLE_USER', 100001);
 
 INSERT INTO restaurants (id, name, description) VALUES
-  (10000, 'Mansarda', 'Address: Pochtamtskaya St., 3-5, St. Petersburg 190000, Russia.'),
-  (10001, 'Terrassa', 'Address: Kazanskaya St., 3A, St. Petersburg 191186, Russia');
+  (10000, 'Mansarda', 'Pochtamtskaya St., 3-5, St.Petersburg'),
+  (10001, 'Terrassa', 'Kazanskaya St., 3A, St.Petersburg');
 
-INSERT INTO menus (id, restaurant_id, date) VALUES
+INSERT INTO menus (id, restaurant_id, menu_date) VALUES
   (1000, 10000, 'yesterday'),  --past vote exist (HSQLDB -  CURRENT_DATE - '1' DAY)
   (1001, 10001, 'yesterday'),  --past not voted
   (1002, 10000, CURRENT_DATE), --future vote exist
   (1003, 10001, CURRENT_DATE), --future for update
-  (1004, 10000, 'tomorrow');   --future not voted
+  (1004, 10000, 'tomorrow'),   --future not voted
+  (1005, 10000, '2018-01-01 00:00:00');
 
 INSERT INTO dishes (id, name, price, menu_id) VALUES
   (100, 'Burger',   200, 1000), --past vote exist
@@ -47,6 +48,6 @@ INSERT INTO dishes (id, name, price, menu_id) VALUES
   (113, 'Tea',      110, 1004),
   (114,'Cheesecake',180, 1004);
 ;
-INSERT INTO votes (user_id, menu_id, date) VALUES
+INSERT INTO votes (user_id, menu_id, vote_date) VALUES
   (100001, 1000, 'yesterday'),
   (100001, 1002, CURRENT_DATE);
