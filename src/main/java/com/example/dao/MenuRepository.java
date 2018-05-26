@@ -1,7 +1,7 @@
 package com.example.dao;
 
 import com.example.domain.Menu;
-import org.springframework.data.domain.Sort;
+import com.example.domain.Restaurant;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -16,19 +16,18 @@ import java.util.Optional;
 public interface MenuRepository extends JpaRepository<Menu, Integer> {
 
     @Override
-    Optional<Menu> findById(Integer id);
+    Menu save(Menu menu);
 
     @Override
     List<Menu> findAll();
 
     @Override
-    List<Menu> findAll(Sort sort);
-
-    @Override
-    Menu save(Menu menu);
+    Optional<Menu> findById(Integer id);
 
     @Override
     void deleteById(Integer id);
+
+    Menu getByDateAndRestaurant(LocalDate date, Restaurant restaurant);
 
     @Query("SELECT m FROM Menu m WHERE m.date=:date")
     Optional<List<Menu>> getAllForDate(@Param("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date);

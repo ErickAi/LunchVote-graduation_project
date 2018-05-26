@@ -16,6 +16,7 @@ import java.util.List;
 import static com.example.data.MenuTestData.*;
 import static com.example.data.RestaurantTestData.RESTAURANT_1_ID;
 import static com.example.data.RestaurantTestData.RESTAURANT_2;
+import static com.example.data.RestaurantTestData.RESTAURANT_2_ID;
 
 public class MenuServiceTest extends AbstractServiceTest {
 
@@ -29,16 +30,17 @@ public class MenuServiceTest extends AbstractServiceTest {
     DishRepository dishRepository;
 
     @Test
+    @Transactional
     public void create() {
         Menu menu = new Menu(LocalDate.now().plusDays(1), RESTAURANT_2);
-        Menu created = service.create(menu);
+        Menu created = service.createOrUpdate(menu);
         assertMatchVoteList(repository.findAll(), Arrays.asList(
-                PAST_VOTE_EXIST_MENU, PAST_NOT_VOTED_MENU, CURRENT_VOTE_EXIST_MENU, CURRENT_NOT_VOTED_MENU, FUTURE_NOT_VOTED_MENU, created));
+                PAST_VOTE_EXIST_MENU, PAST_NOT_VOTED_MENU, CURRENT_VOTE_EXIST_MENU, CURRENT_NOT_VOTED_MENU, FUTURE_NOT_VOTED_MENU, OLD_EXAMPLE_MENU, created));
     }
 
     @Test
     public void get() {
-        MenuTo menu = service.get(FUTURE_VOTE_EXIST_MENU_ID);
+        MenuTo menu = service.get(CURRENT_VOTE_EXIST_MENU_ID);
         assertMatch(menu, MenuUtil.menuAsTo(CURRENT_VOTE_EXIST_MENU));
     }
 
@@ -46,7 +48,7 @@ public class MenuServiceTest extends AbstractServiceTest {
     public void getAll() {
         List<MenuTo> menus = service.getAll();
         List<MenuTo> expected = MenuUtil.menusAsListTo(Arrays.asList(
-                FUTURE_NOT_VOTED_MENU, CURRENT_VOTE_EXIST_MENU, CURRENT_NOT_VOTED_MENU, PAST_VOTE_EXIST_MENU, PAST_NOT_VOTED_MENU));
+                FUTURE_NOT_VOTED_MENU, CURRENT_VOTE_EXIST_MENU, CURRENT_NOT_VOTED_MENU, PAST_VOTE_EXIST_MENU, PAST_NOT_VOTED_MENU, OLD_EXAMPLE_MENU));
         assertMatch(menus, expected);
     }
 
@@ -55,8 +57,8 @@ public class MenuServiceTest extends AbstractServiceTest {
     public void update() {
         Menu forUpdate = new Menu(CURRENT_VOTE_EXIST_MENU);
         forUpdate.setDate(LocalDate.now().plusDays(2));
-        service.update(forUpdate);
-        Menu updated = repository.getOne(FUTURE_VOTE_EXIST_MENU_ID);
+        service.createOrUpdate(forUpdate);
+        Menu updated = repository.getOne(CURRENT_VOTE_EXIST_MENU_ID);
         assertMatch(updated, forUpdate);
     }
 
@@ -70,7 +72,7 @@ public class MenuServiceTest extends AbstractServiceTest {
     @Test
     public void getAllForRestaurant() {
         List<MenuTo> menus = service.getAllForRestaurant(RESTAURANT_1_ID);
-        List<MenuTo> expected = MenuUtil.menusAsListTo(Arrays.asList(PAST_VOTE_EXIST_MENU, CURRENT_VOTE_EXIST_MENU, FUTURE_NOT_VOTED_MENU));
+        List<MenuTo> expected = MenuUtil.menusAsListTo(Arrays.asList(OLD_EXAMPLE_MENU, PAST_VOTE_EXIST_MENU, CURRENT_VOTE_EXIST_MENU, FUTURE_NOT_VOTED_MENU));
         assertMatch(menus, expected);
     }
 

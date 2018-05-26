@@ -1,20 +1,29 @@
 package com.example.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.List;
 
 @Entity
-@Table(name = "menus")
+@Table(name = "menus", uniqueConstraints = {@UniqueConstraint(columnNames = {"menu_date", "restaurant_id"}, name = "unique_menu")})
 public class Menu extends AbstractBaseEntity {
 
+    @NotNull
+    @Column(name = "menu_date", nullable = false)
     private LocalDate date;
 
+    @NotNull
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "restaurant_id", nullable = false)
     private Restaurant restaurant;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "menu")
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "menu")
     private List<Dish> dishes;
 
     public Menu() {
@@ -22,6 +31,15 @@ public class Menu extends AbstractBaseEntity {
 
     public Menu(Menu menu) {
         this(menu.getId(), menu.getDate(), menu.getRestaurant(), menu.getDishes());
+    }
+
+    public  Menu(LocalDate date) {
+        this.date = date;
+    }
+
+    public  Menu(int id, LocalDate date) {
+        super(id);
+        this.date = date;
     }
 
     public  Menu(LocalDate date, Restaurant restaurant) {

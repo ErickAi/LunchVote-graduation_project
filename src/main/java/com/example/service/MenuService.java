@@ -1,8 +1,10 @@
 package com.example.service;
 
 import com.example.dao.MenuRepository;
+import com.example.dao.RestaurantRepository;
 import com.example.dao.VoteRepository;
 import com.example.domain.Menu;
+import com.example.domain.Restaurant;
 import com.example.dto.MenuTo;
 import com.example.util.MenuUtil;
 import com.example.util.exception.NotFoundException;
@@ -25,16 +27,27 @@ public class MenuService {
     MenuRepository menuRepository;
     @Autowired
     VoteRepository voteRepository;
+    @Autowired
+    RestaurantRepository restaurantRepository;
 
+/*
     @Transactional
-    public Menu create(Menu menu) {
+    public Menu create(Menu menu, int restaurantId) {
+        menu.setRestaurant(restaurantRepository.findById(restaurantId)
+                .orElseThrow(() -> new NotFoundException("Not found restaurant " + restaurantId + " to create a menu")));
         return menuRepository.save(menu);
     }
+*/
 
-    public MenuTo get(int id) throws NotFoundException {
-        MenuTo menuTo = menuRepository.findById(id).map(MenuUtil::menuAsTo).orElseThrow(() -> new NotFoundException(NOT_FOUND_WITH_ID + id));
-        menuTo.setQuantityVotes(voteRepository.countByMenuId(id));
-        return menuTo;
+    @Transactional
+    public Menu createOrUpdate(Menu menu) {
+
+        Restaurant restaurant = menu.getRestaurant();
+        assureIdConsistent(restaurant, restaurantRepository.getByName(restaurant.getName()));
+        menu.setRestaurant(restaurantRepository.save(restaurant));
+
+        assureIdConsistent(menu, menuRepository.getByDateAndRestaurant(menu.getDate(), menu.getRestaurant()));
+        return menuRepository.save(menu);
     }
 
     public List<MenuTo> getAll() {
@@ -46,24 +59,24 @@ public class MenuService {
         return menuTos;
     }
 
-    @Transactional
-    public void update(Menu menu) {
-        Assert.notNull(menu, "menu must not be null");
-        checkNotFound(menuRepository.save(menu), NOT_FOUND_WITH_ID + menu.getId());
+    public MenuTo get(int id) throws NotFoundException {
+        MenuTo menuTo = menuRepository.findById(id).map(MenuUtil::menuAsTo).orElseThrow(() -> new NotFoundException(NOT_FOUND_WITH_ID + id));
+        menuTo.setQuantityVotes(voteRepository.countByMenuId(id));
+        return menuTo;
     }
 
-/*
     @Transactional
     public void delete(Integer id) {
         menuRepository.deleteById(id);
     }
-*/
 
     public List<MenuTo> getAllForDate(LocalDate date) {
-        List<MenuTo> menuTos = menuRepository.getAllForDate(date).map(MenuUtil::menusAsListTo)
-                .orElseThrow(() -> new NotFoundException(NOT_FOUND_WITH + date));
-        for (MenuTo menu : menuTos) {
-            menu.setQuantityVotes(voteRepository.countByMenuId(menu.getId()));
+        List<Menu> menus = menuRepository.getAllForDate(date)
+                .orElseGet(() -> menuRepository.getAllForDate(LocalDate.now())
+                        .orElseThrow(() -> new NotFoundException(NOT_FOUND_WITH + date)));
+        List<MenuTo> menuTos = MenuUtil.menusAsListTo(menus);
+        for (MenuTo menuTo : menuTos) {
+            menuTo.setQuantityVotes(voteRepository.countByMenuId(menuTo.getId()));
         }
         menuTos.sort(Comparator.comparing(MenuTo::getQuantityVotes).reversed());
         return menuTos;
@@ -72,7 +85,6 @@ public class MenuService {
     public List<MenuTo> getAllForRestaurant(int restaurantId) {
         List<MenuTo> menuTos = menuRepository.getAllForRestaurant(restaurantId).map(MenuUtil::menusAsListTo)
                 .orElseThrow(() -> new NotFoundException(NOT_FOUND_WITH + "restaurant " + restaurantId));
-
         for (MenuTo menu : menuTos) {
             menu.setQuantityVotes(voteRepository.countByMenuId(menu.getId()));
         }
