@@ -1,44 +1,35 @@
 package com.example.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "restaurants")
+@Table(name = "restaurants", uniqueConstraints = {@UniqueConstraint(columnNames = "name", name = "unique_restaurant")})
 public class Restaurant extends AbstractNamedEntity {
 
-    @Column(name = "description", nullable = false)
-    private String description;
-
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "restaurant")
-    protected List<Menu> menus;
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "restaurant")
+    private List<Menu> menus;
 
     public Restaurant() {
     }
-    public Restaurant(Integer id, String name, String description) {
+    public Restaurant(Integer id, String name) {
         super(id, name);
-        this.description = description;
         this.menus = new ArrayList<>();
     }
 
     public Restaurant(Restaurant restaurant) {
-        this(restaurant.getId(), restaurant.getName(), restaurant.getDescription(), restaurant.getMenus());
+        this(restaurant.getId(), restaurant.getName(), restaurant.getMenus());
     }
 
-    public Restaurant(Integer id, String name, String description, List<Menu> menus) {
+    public Restaurant(Integer id, String name, List<Menu> menus) {
         super(id, name);
-        this.description = description;
         this.menus = menus;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
 
     public List<Menu> getMenus() {
         return menus;
@@ -51,9 +42,8 @@ public class Restaurant extends AbstractNamedEntity {
     @Override
     public String toString() {
         return "Restaurant{" +
-                ", id=" + id +
+                "id=" + id +
                 ", name='" + name + '\'' +
-                "description='" + description + '\'' +
                 '}';
     }
 }
