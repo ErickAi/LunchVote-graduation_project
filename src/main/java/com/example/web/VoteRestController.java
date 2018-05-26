@@ -1,46 +1,56 @@
 package com.example.web;
 
 import com.example.AuthorizedUser;
+import com.example.dao.MenuRepository;
 import com.example.domain.Menu;
 import com.example.domain.Restaurant;
 import com.example.dto.VoteTo;
 import com.example.service.VoteService;
+import com.example.util.exception.NotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
 
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
-import static org.springframework.web.bind.annotation.RequestMethod.POST;
-
 @RestController
+@RequestMapping(value = VoteRestController.VOTE_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class VoteRestController {
 
+    public static final String VOTE_URL = "api/vote";
     private final Logger log = LoggerFactory.getLogger(getClass());
-    public static final String VOTE_URL = "api/votes";
 
     @Autowired
     private VoteService service;
 
-    @RequestMapping(method = GET)
+    @Autowired
+    private MenuRepository menuRepository;
+
+    @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<Restaurant> current() {
+        log.info("current");
         return service.getForUserAndDate(AuthorizedUser.id(), LocalDate.now())
                 .map(vote -> new ResponseEntity<>(vote.getMenu().getRestaurant(), HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @RequestMapping(value = "/{id}", method = POST)
-    public ResponseEntity<Restaurant> vote(@PathVariable("id") Menu menu) {
-        LocalDate today = LocalDate.now();
-        if (menu == null || menu.getDate().isBefore(today)) {
+    @RequestMapping(value = "/{id}", method = RequestMethod.POST)
+//            , consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Restaurant> vote(@PathVariable("id") int id) {
+        log.info("vote for menu ({})", id);
+        Menu menu  = menuRepository.findById(id).orElseThrow(()-> new NotFoundException("Not found menu with id= " + id));
+
+        if (menu.getDate().isBefore(LocalDate.now())) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+
         VoteTo voteTo = service.createOrUpdate(new VoteTo(AuthorizedUser.id(), menu));
 
         return new ResponseEntity<>(voteTo.getMenu().getRestaurant(),
