@@ -1,14 +1,17 @@
 package com.example.domain;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "dishes")
+@Table(name = "dishes", uniqueConstraints = {@UniqueConstraint(columnNames = {"menu_id", "name"}, name = "unique_dish")})
 public class Dish extends AbstractNamedEntity {
 
+    @NotNull
     @Column(name = "price", nullable = false)
     private Integer price;
 
+    @NotNull
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "menu_id", nullable = false)
     private Menu menu;
