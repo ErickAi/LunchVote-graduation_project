@@ -16,9 +16,9 @@ INSERT INTO user_roles (role, user_id) VALUES
   ('ROLE_USER', 100000),
   ('ROLE_USER', 100001);
 
-INSERT INTO restaurants (id, name, description) VALUES
-  (10000, 'Mansarda', 'Pochtamtskaya St., 3-5, St.Petersburg'),
-  (10001, 'Terrassa', 'Kazanskaya St., 3A, St.Petersburg');
+INSERT INTO restaurants (id, name) VALUES
+  (10000, 'Mansarda'),
+  (10001, 'Terrassa');
 
 INSERT INTO menus (id, restaurant_id, menu_date) VALUES
   (1000, 10000, 'yesterday'),  --past vote exist (HSQLDB -  CURRENT_DATE - '1' DAY)

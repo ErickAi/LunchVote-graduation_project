@@ -12,8 +12,8 @@ public class RestaurantTestData {
     public static final int RESTAURANT_1_ID = 10000;
     public static final int RESTAURANT_2_ID = 10001;
 
-    public static final Restaurant RESTAURANT_1 = new Restaurant(RESTAURANT_1_ID, "Mansarda", "Address: Pochtamtskaya St., 3-5, St. Petersburg 190000, Russia.");
-    public static final Restaurant RESTAURANT_2 = new Restaurant(RESTAURANT_2_ID, "Terrassa", "Address: Kazanskaya St., 3A, St. Petersburg 191186, Russia");
+    public static final Restaurant RESTAURANT_1 = new Restaurant(RESTAURANT_1_ID, "Mansarda");
+    public static final Restaurant RESTAURANT_2 = new Restaurant(RESTAURANT_2_ID, "Terrassa");
 
     public static void assertMatch(Restaurant actual, Restaurant expected) {
         assertThat(actual).isEqualToIgnoringGivenFields(expected,  "menus");

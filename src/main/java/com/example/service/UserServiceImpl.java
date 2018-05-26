@@ -38,22 +38,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return repository.save(user);
     }
 
-    @CacheEvict(value = "users", allEntries = true)
-    @Transactional
-    public void delete(int id) throws NotFoundException {
-        checkNotFound(repository.existsById(id), NOT_FOUND_WITH_ID + id);
-        repository.deleteById(id);
-    }
-
-    public User get(int id) throws NotFoundException {
-        return repository.findById(id).orElseThrow(() -> new NotFoundException(NOT_FOUND_WITH_ID + id));
-    }
-
     @Cacheable("users")
     public List<User> getAll() {
         return repository.findAll();
     }
 
+    public User get(int id) throws NotFoundException {
+        return repository.findById(id).orElseThrow(() -> new NotFoundException(NOT_FOUND_WITH_ID + id));
+    }
     @CacheEvict(value = "users", allEntries = true)
     @Transactional
     public void update(User user) {
@@ -67,6 +59,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public void update(UserTo userTo) {
         User user = updateFromTo(get(userTo.getId()), userTo);
         repository.save(user);
+    }
+
+    @CacheEvict(value = "users", allEntries = true)
+    @Transactional
+    public void delete(int id) throws NotFoundException {
+        checkNotFound(repository.existsById(id), NOT_FOUND_WITH_ID + id);
+        repository.deleteById(id);
     }
 
     public User getByEmail(String email) throws NotFoundException {

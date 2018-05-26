@@ -35,8 +35,7 @@ CREATE TABLE user_roles
 
 CREATE TABLE restaurants (
   id            INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
-  name          VARCHAR            NOT NULL,
-  description   TEXT               NOT NULL
+  name          VARCHAR            NOT NULL
 );
 CREATE UNIQUE INDEX unique_restaurant ON restaurants (name);
 
@@ -54,7 +53,7 @@ CREATE TABLE dishes (
   price         INTEGER            NOT NULL,
   menu_id       INTEGER            NOT NULL
 );
-CREATE UNIQUE INDEX unique_dish ON dishes (menu_id, name);
+CREATE UNIQUE INDEX unique_dish ON dishes (name, menu_id);
 
 CREATE TABLE votes (
   id            INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
