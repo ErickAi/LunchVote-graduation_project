@@ -7,22 +7,22 @@
     <!--<http use-expressions="true" auto-config="false">-->
     <http pattern="/api/**" use-expressions="true" name="restSecurityFilterChain" create-session="stateless">
         <http-basic/>
-        <!--<intercept-url pattern="/**" access="isAnonymous()"/>-->
         <intercept-url pattern="/**" access="isAuthenticated()"/>
         <intercept-url pattern="/users/*" access="hasRole('ROLE_ADMIN')"/>
-        <!--<intercept-url pattern="/profile" access="permitAll"/>-->
+        <intercept-url pattern="/profile" access="permitAll"/>
         <csrf disabled="true"/>
 <!--    <session-management session-fixation-protection="migrateSession" session-authentication-error-url="/login">
             <concurrency-control max-sessions="5"/>
         </session-management>-->
     </http>
 
-    <beans:bean name="noopEncoder" class="org.springframework.security.crypto.password.NoOpPasswordEncoder"/>
+    <!--<beans:bean name="noopEncoder" class="org.springframework.security.crypto.password.NoOpPasswordEncoder"/>-->
+    <beans:bean class="org.springframework.security.crypto.factory.PasswordEncoderFactories" id="passwordEncoder" factory-method="createDelegatingPasswordEncoder"/>
 
     <authentication-manager>
     <authentication-provider user-service-ref="userService">
-            <!--<password-encoder ref="passwordEncoder"/>-->
-        <password-encoder ref="noopEncoder"/>
+        <password-encoder ref="passwordEncoder"/>
+        <!--<password-encoder ref="noopEncoder"/>-->
     </authentication-provider>
     </authentication-manager>
 </beans:beans>

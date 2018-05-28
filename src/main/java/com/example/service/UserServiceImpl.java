@@ -11,12 +11,14 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import java.util.List;
 
+import static com.example.util.UserUtil.prepareToSave;
 import static com.example.util.UserUtil.updateFromTo;
 import static com.example.util.ValidationUtil.*;
 
@@ -25,17 +27,19 @@ import static com.example.util.ValidationUtil.*;
 public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final UserRepository repository;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository repository) {
+    public UserServiceImpl(UserRepository repository, PasswordEncoder passwordEncoder) {
         this.repository = repository;
-    }
+        this.passwordEncoder = passwordEncoder;
 
+}
     @CacheEvict(value = "users", allEntries = true)
     @Transactional
     public User create(User user) {
         Assert.notNull(user, "user must not be null");
-        return repository.save(user);
+        return repository.save(prepareToSave(user, passwordEncoder));
     }
 
     @Cacheable("users")
@@ -50,7 +54,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Transactional
     public void update(User user) {
         Assert.notNull(user, "user must not be null");
-        checkNotFound(repository.save(user), NOT_FOUND_WITH_ID + user.getId());
+        checkNotFound(repository.save(prepareToSave(user, passwordEncoder)), NOT_FOUND_WITH_ID + user.getId());
     }
 
     @CacheEvict(value = "users", allEntries = true)
@@ -58,7 +62,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public void update(UserTo userTo) {
         User user = updateFromTo(get(userTo.getId()), userTo);
-        repository.save(user);
+        repository.save(prepareToSave(user, passwordEncoder));
     }
 
     @CacheEvict(value = "users", allEntries = true)
