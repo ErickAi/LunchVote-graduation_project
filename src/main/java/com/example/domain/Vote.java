@@ -35,16 +35,7 @@ public class Vote extends AbstractBaseEntity {
         this.menu = menu;
         this.date = menu.getDate();
     }
-
-    public boolean isNew() {
-        return (this.id == null);
-    }
-
-    @Override
-    public void setId(Integer id) {
-
-    }
-
+    
     public User getUser() {
         return user;
     }

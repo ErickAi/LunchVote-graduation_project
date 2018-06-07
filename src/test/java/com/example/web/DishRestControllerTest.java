@@ -70,7 +70,7 @@ public class DishRestControllerTest extends AbstractControllerTest {
         Dish updated = new Dish(DISH_14);
         updated.setName("UpdatedName");
         updated.setMenu(FUTURE_NOT_VOTED_MENU);
-        ResultActions action = mockMvc.perform(put(REST_URL + DISH_14_ID)
+        mockMvc.perform(put(REST_URL + DISH_14_ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(ADMIN))
                 .content(JsonUtil.writeValue(updated)))
@@ -84,7 +84,7 @@ public class DishRestControllerTest extends AbstractControllerTest {
     @Test
     public void testDelete() throws Exception {
         mockMvc.perform(delete((REST_URL + DISH_12_ID))
-                .with(TestUtil.userHttpBasic(ADMIN)))
+                .with(userHttpBasic(ADMIN)))
                 .andExpect(status().isNoContent());
     }
 

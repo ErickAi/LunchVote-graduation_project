@@ -11,7 +11,6 @@ import com.example.util.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Assert;
 
 import java.time.LocalDate;
 import java.util.Comparator;
@@ -29,15 +28,6 @@ public class MenuService {
     VoteRepository voteRepository;
     @Autowired
     RestaurantRepository restaurantRepository;
-
-/*
-    @Transactional
-    public Menu create(Menu menu, int restaurantId) {
-        menu.setRestaurant(restaurantRepository.findById(restaurantId)
-                .orElseThrow(() -> new NotFoundException("Not found restaurant " + restaurantId + " to create a menu")));
-        return menuRepository.save(menu);
-    }
-*/
 
     @Transactional
     public Menu createOrUpdate(Menu menu) {

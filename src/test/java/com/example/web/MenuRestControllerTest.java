@@ -2,7 +2,6 @@ package com.example.web;
 
 import com.example.TestUtil;
 import com.example.dao.MenuRepository;
-import com.example.data.MenuTestData;
 import com.example.domain.Menu;
 import com.example.service.MenuService;
 import com.example.util.json.JsonUtil;
@@ -81,13 +80,13 @@ public class MenuRestControllerTest extends AbstractControllerTest{
                 .andExpect(status().isOk());
 
         Menu returned = repository.getOne(FUTURE_NOT_VOTED_MENU_ID);
-        MenuTestData.assertMatch(updated, returned);
+        assertMatch(updated, returned);
     }
 
     @Test
     public void testDelete() throws Exception {
         mockMvc.perform(delete((REST_URL + FUTURE_NOT_VOTED_MENU_ID))
-                .with(TestUtil.userHttpBasic(ADMIN)))
+                .with(userHttpBasic(ADMIN)))
                 .andExpect(status().isNoContent());
     }
 
