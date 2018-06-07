@@ -2,11 +2,15 @@ package com.example.data;
 
 import com.example.domain.Role;
 import com.example.domain.User;
+import com.example.util.json.JsonUtil;
+import org.springframework.test.web.servlet.ResultMatcher;
 
 import java.util.Arrays;
 
 import static com.example.domain.AbstractBaseEntity.START_SEQ;
+import static com.example.util.json.JsonUtil.writeIgnoreProps;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
 public class UserTestData {
     public static final int ADMIN_ID = START_SEQ;
@@ -26,4 +30,17 @@ public class UserTestData {
     public static void assertMatch(Iterable<User> actual, Iterable<User> expected) {
         assertThat(actual).usingElementComparatorIgnoringFields("registered", "password").isEqualTo(expected);
     }
+
+    public static ResultMatcher contentJson(User... expected) {
+        return content().json(writeIgnoreProps(Arrays.asList(expected), "registered", "password"));
+    }
+
+    public static ResultMatcher contentJson(User expected) {
+        return content().json(writeIgnoreProps(expected, "registered", "password"));
+    }
+
+    public static String jsonWithPassword(User user, String pass) {
+        return JsonUtil.writeAdditionProps(user, "password", pass);
+    }
+
 }

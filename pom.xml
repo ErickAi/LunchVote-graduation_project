@@ -32,10 +32,10 @@
         <slf4j.version>1.7.25</slf4j.version>
         <!--   Tests  -->
         <junit.version>4.12</junit.version>
+        <jsonassert.version>1.5.0</jsonassert.version>
         <!--   Tools  -->
         <ehcache.version>3.4.0</ehcache.version>
         <jackson.version>2.9.3</jackson.version>
-
     </properties>
 
     <dependencies>
@@ -55,6 +55,7 @@
             <artifactId>spring-data-jpa</artifactId>
             <version>${spring-data-jpa.version}</version>
         </dependency>
+
 
         <!--Security-->
         <dependency>
@@ -208,6 +209,13 @@
             <artifactId>spring-security-test</artifactId>
             <version>${spring-security.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.skyscreamer</groupId>
+            <artifactId>jsonassert</artifactId>
+            <version>${jsonassert.version}</version>
+            <scope>test</scope>
+        </dependency>
+
 
     </dependencies>
 
