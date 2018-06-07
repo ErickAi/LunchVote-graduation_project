@@ -41,6 +41,8 @@
     <context:component-scan base-package="com.example.dao"/>
     <jpa:repositories base-package="com.example.dao"/>
 
+    <bean class="com.example.dao.JpaUtil"/>
+
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
           p:dataSource-ref="dataSource"
           p:packagesToScan="com.example.**.domain">
@@ -57,8 +59,6 @@
                        value="org.ehcache.jsr107.EhcacheCachingProvider"/>
                 <entry key="#{T(org.hibernate.cfg.AvailableSettings).USE_SECOND_LEVEL_CACHE}" value="true"/>
                 <entry key="#{T(org.hibernate.cfg.AvailableSettings).USE_QUERY_CACHE}" value="false"/> <!--default-->
-                <entry key="javax.persistence.validation.group.pre-persist" value="com.example.lunch-vote.View$Persist"/>
-                <entry key="javax.persistence.validation.group.pre-update" value="com.example.lunch-vote.View$Persist"/>
 <!--
                 <entry key="#{T(org.hibernate.cfg.AvailableSettings).HBM2DDL_AUTO}" value="${hibernate.hbm2ddl.auto}"/>
                 <entry key="#{T(org.hibernate.cfg.AvailableSettings).HBM2DDL_SCRIPTS_ACTION}" value="drop-and-create"/>

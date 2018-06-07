@@ -3,7 +3,6 @@ package com.example.service;
 import com.example.domain.Role;
 import com.example.domain.User;
 import com.example.util.exception.NotFoundException;
-import org.junit.After;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -20,17 +19,10 @@ public class UserServiceTest extends AbstractServiceTest {
     @Autowired
     protected UserService service;
 
-    @After
-    public void tearDown() throws Exception {
-        service.evictCache();
-    }
-
     @Test
     public void create() throws Exception {
         User user = new User(null, "NewUser", "new@gmail.com", "newPass", false, new Date(), Collections.singleton(Role.ROLE_USER));
-//        user = UserUtil.prepareToSave(user);
         User created = service.create(user);
-        user.setId(created.getId());
         assertMatch(service.getAll(), ADMIN, USER, created);
     }
 
@@ -51,7 +43,6 @@ public class UserServiceTest extends AbstractServiceTest {
         service.delete(USER_ID);
         assertMatch(Collections.singletonList(ADMIN), service.getAll());
     }
-
 
     @Test
     public void getByEmail() throws Exception {
@@ -75,8 +66,6 @@ public class UserServiceTest extends AbstractServiceTest {
         updated.setName("UpdatedName");
         service.update(updated);
         assertMatch(updated, service.get(USER_ID));
-//        updated.setName("User");
-//        service.update(updated);
     }
 
     @Test(expected = DataAccessException.class)

@@ -6,8 +6,6 @@ import com.example.domain.User;
 import com.example.dto.UserTo;
 import com.example.util.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -35,14 +33,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         this.passwordEncoder = passwordEncoder;
 
 }
-    @CacheEvict(value = "users", allEntries = true)
     @Transactional
     public User create(User user) {
         Assert.notNull(user, "user must not be null");
         return repository.save(prepareToSave(user, passwordEncoder));
     }
 
-    @Cacheable("users")
     public List<User> getAll() {
         return repository.findAll();
     }
@@ -50,14 +46,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public User get(int id) throws NotFoundException {
         return repository.findById(id).orElseThrow(() -> new NotFoundException(NOT_FOUND_WITH_ID + id));
     }
-    @CacheEvict(value = "users", allEntries = true)
     @Transactional
     public void update(User user) {
         Assert.notNull(user, "user must not be null");
         checkNotFound(repository.save(prepareToSave(user, passwordEncoder)), NOT_FOUND_WITH_ID + user.getId());
     }
 
-    @CacheEvict(value = "users", allEntries = true)
     @Transactional
     @Override
     public void update(UserTo userTo) {
@@ -65,7 +59,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         repository.save(prepareToSave(user, passwordEncoder));
     }
 
-    @CacheEvict(value = "users", allEntries = true)
     @Transactional
     public void delete(int id) throws NotFoundException {
         checkNotFound(repository.existsById(id), NOT_FOUND_WITH_ID + id);
@@ -77,16 +70,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return repository.getByEmail(email).orElseThrow(() -> new NotFoundException(NOT_FOUND_WITH + "email " + email));
     }
 
-    @CacheEvict(value = "users", allEntries = true)
     @Transactional
     public void enable(int id, boolean enabled) {
         User user = get(id);
         user.setEnabled(enabled);
         repository.save(user);
-    }
-
-    @CacheEvict(value = "users", allEntries = true)
-    public void evictCache() {
     }
 
     @Override
