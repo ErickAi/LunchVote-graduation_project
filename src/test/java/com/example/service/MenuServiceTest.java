@@ -16,7 +16,6 @@ import java.util.List;
 import static com.example.data.MenuTestData.*;
 import static com.example.data.RestaurantTestData.RESTAURANT_1_ID;
 import static com.example.data.RestaurantTestData.RESTAURANT_2;
-import static com.example.data.RestaurantTestData.RESTAURANT_2_ID;
 
 public class MenuServiceTest extends AbstractServiceTest {
 
@@ -30,7 +29,6 @@ public class MenuServiceTest extends AbstractServiceTest {
     DishRepository dishRepository;
 
     @Test
-    @Transactional
     public void create() {
         Menu menu = new Menu(LocalDate.now().plusDays(1), RESTAURANT_2);
         Menu created = service.createOrUpdate(menu);
