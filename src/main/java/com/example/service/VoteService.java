@@ -27,19 +27,26 @@ public class VoteService {
         return voteRepository.getForUserAndDate(userId, date);
     }
 
+    /**
+     * Returns {@link Vote} as {@link VoteTo}
+     * <p>
+     * if {@link Vote} exists and the voting time has expired, the unchanged vote returns
+     * if {@link Vote} exists and the voting time has not expired, the updated vote returns
+     * if {@link Vote} does not exists, new vote returns
+     */
+
     @Transactional
     public VoteTo createOrUpdate(VoteTo voteTo) {
+        VoteTo finalVoteTo = voteTo;
 
         if (voteTo.isExpired()) {
-            VoteTo finalVoteTo = voteTo;
-            voteTo = voteRepository.getForUserAndDate(voteTo.getUserId(),voteTo.getDate())
-                    .map(VoteTo::new)
-                    .orElseGet(() -> VoteUtil.setIdAndUpdated(finalVoteTo, null, true));
-        } else {
-            VoteTo finalVoteTo = voteTo;
             voteTo = voteRepository.getForUserAndDate(voteTo.getUserId(), voteTo.getDate())
-                    .map((Vote v) -> VoteUtil.setIdAndUpdated(finalVoteTo, v.getId(), true))
-                    .orElseGet(() -> VoteUtil.setIdAndUpdated(finalVoteTo, null, true));
+                    .map(VoteTo::new)                                                                   //vote exists, update forbidden
+                    .orElseGet(() -> VoteUtil.setIdAndUpdated(finalVoteTo, null, true));     //vote new, create allowed
+        } else {
+            voteTo = voteRepository.getForUserAndDate(voteTo.getUserId(), voteTo.getDate())
+                    .map((Vote v) -> VoteUtil.setIdAndUpdated(finalVoteTo, v.getId(), true))    //vote exists, update allowed
+                    .orElseGet(() -> VoteUtil.setIdAndUpdated(finalVoteTo, null, true));     //vote new, create allowed
         }
 
         if (voteTo.isUpdated()) {
@@ -48,6 +55,7 @@ public class VoteService {
             voteTo.setId(vote.getId());
         }
         return voteTo;
+
     }
 
     @Transactional

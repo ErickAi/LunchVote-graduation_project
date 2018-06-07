@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 public class VoteTo extends BaseTo {
-    private static final LocalTime EXPIRED_TIME = LocalTime.parse("11:00");
+    public static final LocalTime EXPIRED_TIME = LocalTime.parse("11:00");
 
     private int userId;
 
