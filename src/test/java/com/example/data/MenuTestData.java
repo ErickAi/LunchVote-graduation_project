@@ -2,13 +2,17 @@ package com.example.data;
 
 import com.example.domain.Menu;
 import com.example.dto.MenuTo;
+import org.springframework.test.web.servlet.ResultMatcher;
 
 import java.time.LocalDate;
 import java.util.Arrays;
 
 import static com.example.data.DishTestData.*;
-import static com.example.data.RestaurantTestData.*;
+import static com.example.data.RestaurantTestData.RESTAURANT_1;
+import static com.example.data.RestaurantTestData.RESTAURANT_2;
+import static com.example.util.json.JsonUtil.writeValue;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
 public class MenuTestData {
 
@@ -16,7 +20,7 @@ public class MenuTestData {
     public static final int PAST_VOTE_EXIST_MENU_ID = 1000;
     public static final int PAST_NOT_VOTED_MENU_ID = 1001;
     public static final int CURRENT_VOTE_EXIST_MENU_ID = 1002;
-    public static final int CURRENT_FOR_UPDATE_MENU_ID = 1003;
+    public static final int CURRENT_NOT_VOTED_MENU_ID = 1003;
     public static final int FUTURE_NOT_VOTED_MENU_ID = 1004;
     public static final int OLD_EXAMPLE_MENU_ID = 1005;
 
@@ -29,7 +33,7 @@ public class MenuTestData {
 
     public static final Menu CURRENT_VOTE_EXIST_MENU = new Menu(CURRENT_VOTE_EXIST_MENU_ID,
             LocalDate.now(), RESTAURANT_1, Arrays.asList(DISH_07, DISH_08, DISH_09));
-    public static final Menu CURRENT_NOT_VOTED_MENU = new Menu(CURRENT_FOR_UPDATE_MENU_ID,
+    public static final Menu CURRENT_NOT_VOTED_MENU = new Menu(CURRENT_NOT_VOTED_MENU_ID,
             LocalDate.now(), RESTAURANT_2, Arrays.asList(DISH_10, DISH_11, DISH_12));
     public static final Menu FUTURE_NOT_VOTED_MENU = new Menu(FUTURE_NOT_VOTED_MENU_ID,
             LocalDate.now().plusDays(1), RESTAURANT_1, Arrays.asList(DISH_13, DISH_14, DISH_15));
@@ -54,4 +58,12 @@ public class MenuTestData {
         assertThat(actual).usingElementComparatorOnFields("id", "date", "restaurant")
                 .isEqualTo(expected);
     }
+    public static ResultMatcher contentJson(Menu... expected) {
+        return content().json(writeValue(Arrays.asList(expected)));
+    }
+
+    public static ResultMatcher contentJson(Menu expected) {
+        return content().json(writeValue(expected));
+    }
+
 }

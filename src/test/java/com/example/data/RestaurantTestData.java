@@ -1,10 +1,14 @@
 package com.example.data;
 
 import com.example.domain.Restaurant;
+import org.springframework.test.web.servlet.ResultMatcher;
 
 import java.util.Arrays;
+import java.util.Collections;
 
+import static com.example.util.json.JsonUtil.writeValue;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
 public class RestaurantTestData {
 
@@ -24,7 +28,18 @@ public class RestaurantTestData {
     }
 
     public static void assertMatch(Iterable<Restaurant> actual, Iterable<Restaurant> expected) {
-        assertThat(actual).usingElementComparatorOnFields("id", "name", "description")
-                .isEqualTo(expected);
+        assertThat(actual).isEqualTo(expected);
+    }
+
+    public static ResultMatcher contentJson(Restaurant... expected) {
+        return content().json(writeValue(Arrays.asList(expected)));
+    }
+
+    public static ResultMatcher contentJson(Restaurant expected) {
+        return content().json(writeValue(expected));
+    }
+
+    public static ResultMatcher contentJsonAsSingletoneList(Restaurant expected) {
+        return content().json(writeValue(Collections.singletonList(expected)));
     }
 }

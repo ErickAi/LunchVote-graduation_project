@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -24,10 +25,11 @@ import static com.example.util.ValidationUtil.assureIdConsistent;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 @RestController
+@Transactional(readOnly = true)
 @RequestMapping(value = DishRestController.DISH_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class DishRestController {
 
-    public static final String DISH_URL = "api/dishes";
+    public static final String DISH_URL = "/api/dishes";
     private final Logger log = LoggerFactory.getLogger(getClass());
     private static final Sort SORT_DATE = new Sort(Sort.Direction.DESC, "menu.date");
 
@@ -37,6 +39,8 @@ public class DishRestController {
     @Autowired
     MenuService menuService;
 
+    @Transactional
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Dish> create(@RequestBody Dish dish) {
         dish.setMenu(menuService.createOrUpdate(dish.getMenu()));
@@ -54,7 +58,6 @@ public class DishRestController {
         return repository.findAll(SORT_DATE);
     }
 
-    @Transactional(readOnly = true)
     @GetMapping(value = "/{id}")
     public ResponseEntity<Dish> get(@PathVariable("id") int id) {
         log.info("get ({})", id);
@@ -63,6 +66,8 @@ public class DishRestController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    @Transactional
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void update(@RequestBody Dish dish, @PathVariable("id") int id) {
         log.info("update ({}) with id=({})", dish, id);
@@ -71,6 +76,8 @@ public class DishRestController {
         repository.save(dish);
     }
 
+    @Transactional
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping(value = "/{id}")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void delete(@PathVariable("id") int id) {
