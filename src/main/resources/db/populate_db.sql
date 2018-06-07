@@ -21,11 +21,20 @@ INSERT INTO restaurants (id, name) VALUES
   (10001, 'Terrassa');
 
 INSERT INTO menus (id, restaurant_id, menu_date) VALUES
+/*
   (1000, 10000, 'yesterday'),  --past vote exist (HSQLDB -  CURRENT_DATE - '1' DAY)
   (1001, 10001, 'yesterday'),  --past not voted
   (1002, 10000, CURRENT_DATE), --future vote exist
   (1003, 10001, CURRENT_DATE), --future for update
   (1004, 10000, 'tomorrow'),   --future not voted
+*/
+  (1000, 10000, CURRENT_DATE -'1' DAY),  --past vote exist
+  (1001, 10001, CURRENT_DATE -'1' DAY),  --past not voted
+  (1002, 10000, CURRENT_DATE), --future vote exist
+  (1003, 10001, CURRENT_DATE), --future for update
+  (1004, 10000, CURRENT_DATE +'1' DAY),   --future not voted
+
+
   (1005, 10000, '2018-01-01 00:00:00');
 
 INSERT INTO dishes (id, name, price, menu_id) VALUES
@@ -49,5 +58,5 @@ INSERT INTO dishes (id, name, price, menu_id) VALUES
   (114,'Cheesecake',180, 1004);
 ;
 INSERT INTO votes (user_id, menu_id, vote_date) VALUES
-  (100001, 1000, 'yesterday'),
+  (100001, 1000, CURRENT_DATE -'1' DAY),
   (100001, 1002, CURRENT_DATE);
