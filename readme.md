@@ -1,5 +1,4 @@
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/1f9504e4f58e4dd78202602a46d72fcc)](https://app.codacy.com/app/javawebinar/topjava)
-[![VersionEye](https://www.versioneye.com/user/projects/5a14435c0fb24f2a6d408cde/badge.svg)](https://www.versioneye.com/user/projects/5a14435c0fb24f2a6d408cde)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/fd40c1a6a36a4658aad236b777ad1dae)](https://www.codacy.com/app/ErickAi/lunch-voting?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ErickAi/lunch-voting&amp;utm_campaign=Badge_Grade)
 Lunch voting System. Graduation Project.
 =====================================
 

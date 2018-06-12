@@ -80,7 +80,7 @@ public class RestaurantRestControllerTest extends AbstractControllerTest {
     @Test
     public void testDelete() throws Exception {
         mockMvc.perform(delete((REST_URL + RESTAURANT_2_ID))
-                .with(TestUtil.userHttpBasic(ADMIN)))
+                .with(userHttpBasic(ADMIN)))
                 .andExpect(status().isNoContent());
     }
 
