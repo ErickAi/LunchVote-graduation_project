@@ -55,31 +55,34 @@ public class MenuRestControllerTest extends AbstractControllerTest{
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(contentJson(PAST_VOTE_EXIST_MENU, PAST_NOT_VOTED_MENU, CURRENT_VOTE_EXIST_MENU, CURRENT_NOT_VOTED_MENU, FUTURE_NOT_VOTED_MENU, OLD_EXAMPLE_MENU));
+                .andExpect(contentJson(FUTURE_EXAMPLE_MENU, FUTURE_NOT_VOTED_MENU, FUTURE_FOR_UPDATE_MENU
+                        , CURRENT_VOTE_EXIST_MENU, CURRENT_NOT_VOTED_MENU
+                        , PAST_NOT_VOTED_MENU));
     }
 
     @Test
     public void getById() throws Exception {
-        mockMvc.perform(get(REST_URL + PAST_VOTE_EXIST_MENU_ID)
+        mockMvc.perform(get(REST_URL + PAST_NOT_VOTED_MENU_ID)
                 .with(userHttpBasic(USER)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(contentJson(PAST_VOTE_EXIST_MENU));
+                .andExpect(contentJson(PAST_NOT_VOTED_MENU));
     }
 
     @Test
     public void update() throws Exception {
-        Menu updated = new Menu(FUTURE_NOT_VOTED_MENU);
+        Menu updated = new Menu(FUTURE_EXAMPLE_MENU);
         updated.setRestaurant(RESTAURANT_2);
-        mockMvc.perform(put(REST_URL + FUTURE_NOT_VOTED_MENU_ID)
+        updated.setDate(LocalDate.now().plusDays(5));
+        mockMvc.perform(put(REST_URL + FUTURE_EXAMPLE_MENU_ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(ADMIN))
                 .content(JsonUtil.writeValue(updated)))
                 .andDo(print())
                 .andExpect(status().isOk());
 
-        Menu returned = repository.getOne(FUTURE_NOT_VOTED_MENU_ID);
+        Menu returned = repository.getOne(FUTURE_EXAMPLE_MENU_ID);
         assertMatch(updated, returned);
     }
 
@@ -94,10 +97,10 @@ public class MenuRestControllerTest extends AbstractControllerTest{
     public void getAllForDate() throws Exception{
             mockMvc.perform(get(REST_URL + "for-date")
                 .with(userHttpBasic(USER))
-            .param("date", LocalDate.now().minusDays(1).toString()))
+            .param("date", LocalDate.now().plusDays(1).toString()))
             .andExpect(status().isOk())
             .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-            .andExpect(contentJson(PAST_VOTE_EXIST_MENU, PAST_NOT_VOTED_MENU))
+            .andExpect(contentJson(FUTURE_NOT_VOTED_MENU, FUTURE_FOR_UPDATE_MENU))
             .andDo(print());
 }
 
@@ -118,6 +121,6 @@ public class MenuRestControllerTest extends AbstractControllerTest{
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andDo(print())
-                .andExpect(contentJson(CURRENT_VOTE_EXIST_MENU, FUTURE_NOT_VOTED_MENU, PAST_VOTE_EXIST_MENU, OLD_EXAMPLE_MENU));
+                .andExpect(contentJson(CURRENT_VOTE_EXIST_MENU, FUTURE_NOT_VOTED_MENU, PAST_NOT_VOTED_MENU, FUTURE_EXAMPLE_MENU));
     }
 }

@@ -15,7 +15,7 @@ import java.util.List;
 
 import static com.example.data.MenuTestData.*;
 import static com.example.data.RestaurantTestData.RESTAURANT_1_ID;
-import static com.example.data.RestaurantTestData.RESTAURANT_2;
+import static com.example.data.RestaurantTestData.RESTAURANT_3;
 
 public class MenuServiceTest extends AbstractServiceTest {
 
@@ -29,11 +29,12 @@ public class MenuServiceTest extends AbstractServiceTest {
     DishRepository dishRepository;
 
     @Test
+    @Transactional
     public void create() {
-        Menu menu = new Menu(LocalDate.now().plusDays(1), RESTAURANT_2);
+        Menu menu = new Menu(LocalDate.now().plusDays(1), RESTAURANT_3);
         Menu created = service.createOrUpdate(menu);
         assertMatchVoteList(repository.findAll(), Arrays.asList(
-                PAST_VOTE_EXIST_MENU, PAST_NOT_VOTED_MENU, CURRENT_VOTE_EXIST_MENU, CURRENT_NOT_VOTED_MENU, FUTURE_NOT_VOTED_MENU, OLD_EXAMPLE_MENU, created));
+                PAST_NOT_VOTED_MENU, CURRENT_VOTE_EXIST_MENU, CURRENT_NOT_VOTED_MENU, FUTURE_NOT_VOTED_MENU, FUTURE_FOR_UPDATE_MENU, FUTURE_EXAMPLE_MENU, created));
     }
 
     @Test
@@ -46,7 +47,7 @@ public class MenuServiceTest extends AbstractServiceTest {
     public void getAll() {
         List<MenuTo> menus = service.getAll();
         List<MenuTo> expected = MenuUtil.menusAsListTo(Arrays.asList(
-                FUTURE_NOT_VOTED_MENU, CURRENT_VOTE_EXIST_MENU, CURRENT_NOT_VOTED_MENU, PAST_VOTE_EXIST_MENU, PAST_NOT_VOTED_MENU, OLD_EXAMPLE_MENU));
+                FUTURE_EXAMPLE_MENU, FUTURE_NOT_VOTED_MENU,FUTURE_FOR_UPDATE_MENU, CURRENT_VOTE_EXIST_MENU, CURRENT_NOT_VOTED_MENU, PAST_NOT_VOTED_MENU));
         assertMatch(menus, expected);
     }
 
@@ -70,7 +71,7 @@ public class MenuServiceTest extends AbstractServiceTest {
     @Test
     public void getAllForRestaurant() {
         List<MenuTo> menus = service.getAllForRestaurant(RESTAURANT_1_ID);
-        List<MenuTo> expected = MenuUtil.menusAsListTo(Arrays.asList(OLD_EXAMPLE_MENU, PAST_VOTE_EXIST_MENU, CURRENT_VOTE_EXIST_MENU, FUTURE_NOT_VOTED_MENU));
+        List<MenuTo> expected = MenuUtil.menusAsListTo(Arrays.asList(PAST_NOT_VOTED_MENU, CURRENT_VOTE_EXIST_MENU, FUTURE_NOT_VOTED_MENU, FUTURE_EXAMPLE_MENU));
         assertMatch(menus, expected);
     }
 

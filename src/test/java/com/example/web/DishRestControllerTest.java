@@ -32,7 +32,7 @@ public class DishRestControllerTest extends AbstractControllerTest {
 
     @Test
     public void create() throws Exception {
-        Dish expected = new Dish(null,"New Dish", 180, OLD_EXAMPLE_MENU);
+        Dish expected = new Dish(null,"New Dish", 180, FUTURE_EXAMPLE_MENU);
         ResultActions action = mockMvc.perform(post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(ADMIN))
@@ -95,7 +95,7 @@ public class DishRestControllerTest extends AbstractControllerTest {
                 .param("date", LocalDate.now().minusDays(1).toString()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(contentJson(DISH_01, DISH_02, DISH_03, DISH_04, DISH_05, DISH_06))
+                .andExpect(contentJson(DISH_01, DISH_02, DISH_03))
                 .andDo(print());
     }
 
@@ -107,7 +107,7 @@ public class DishRestControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(contentJson(DISH_07, DISH_08, DISH_09, DISH_10, DISH_11, DISH_12))
+                .andExpect(contentJson(DISH_04, DISH_05, DISH_06, DISH_07, DISH_08, DISH_09))
                 .andDo(print());
     }
 
@@ -118,6 +118,6 @@ public class DishRestControllerTest extends AbstractControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andDo(print())
-                .andExpect(contentJson(DISH_07, DISH_08, DISH_09));
+                .andExpect(contentJson(DISH_04, DISH_05, DISH_06));
     }
 }

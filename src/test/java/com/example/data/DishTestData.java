@@ -30,25 +30,25 @@ public class DishTestData {
     public static final int DISH_14_ID = 113;
     public static final int DISH_15_ID = 114;
 
-    public static final Dish DISH_01 = new Dish(DISH_01_ID, "Burger",   200, PAST_VOTE_EXIST_MENU);
-    public static final Dish DISH_02 = new Dish(DISH_02_ID, "Coffee",   160, PAST_VOTE_EXIST_MENU);
-    public static final Dish DISH_03 = new Dish(DISH_03_ID, "Ice cream",160, PAST_VOTE_EXIST_MENU);
+    public static final Dish DISH_01 = new Dish(DISH_01_ID, "Burger",   200, PAST_NOT_VOTED_MENU);
+    public static final Dish DISH_02 = new Dish(DISH_02_ID, "Coffee",   160, PAST_NOT_VOTED_MENU);
+    public static final Dish DISH_03 = new Dish(DISH_03_ID, "Ice cream",160, PAST_NOT_VOTED_MENU);
 
-    public static final Dish DISH_04 = new Dish(DISH_04_ID, "Nuggets",  160, PAST_NOT_VOTED_MENU);
-    public static final Dish DISH_05 = new Dish(DISH_05_ID, "Tea",      110, PAST_NOT_VOTED_MENU);
-    public static final Dish DISH_06 = new Dish(DISH_06_ID, "Cheesecake",180, PAST_NOT_VOTED_MENU);
+    public static final Dish DISH_04 = new Dish(DISH_04_ID, "Nuggets",  160, CURRENT_VOTE_EXIST_MENU);
+    public static final Dish DISH_05 = new Dish(DISH_05_ID, "Tea",      110, CURRENT_VOTE_EXIST_MENU);
+    public static final Dish DISH_06 = new Dish(DISH_06_ID, "Cheesecake",180,CURRENT_VOTE_EXIST_MENU);
 
-    public static final Dish DISH_07 = new Dish(DISH_07_ID, "Burger",   200, CURRENT_VOTE_EXIST_MENU);
-    public static final Dish DISH_08 = new Dish(DISH_08_ID, "Coffee",   160, CURRENT_VOTE_EXIST_MENU);
-    public static final Dish DISH_09 = new Dish(DISH_09_ID, "Ice cream",160, CURRENT_VOTE_EXIST_MENU);
+    public static final Dish DISH_07 = new Dish(DISH_07_ID, "Burger",   200, CURRENT_NOT_VOTED_MENU);
+    public static final Dish DISH_08 = new Dish(DISH_08_ID, "Coffee",   160, CURRENT_NOT_VOTED_MENU);
+    public static final Dish DISH_09 = new Dish(DISH_09_ID, "Ice cream",160, CURRENT_NOT_VOTED_MENU);
 
-    public static final Dish DISH_10 = new Dish(DISH_10_ID, "Sandwich", 120, CURRENT_NOT_VOTED_MENU);
-    public static final Dish DISH_11 = new Dish(DISH_11_ID, "Cola",     130, CURRENT_NOT_VOTED_MENU);
-    public static final Dish DISH_12 = new Dish(DISH_12_ID, "Chocolate",170, CURRENT_NOT_VOTED_MENU);
+    public static final Dish DISH_10 = new Dish(DISH_10_ID, "Sandwich", 120, FUTURE_NOT_VOTED_MENU);
+    public static final Dish DISH_11 = new Dish(DISH_11_ID, "Cola",     130, FUTURE_NOT_VOTED_MENU);
+    public static final Dish DISH_12 = new Dish(DISH_12_ID, "Chocolate",170, FUTURE_NOT_VOTED_MENU);
 
-    public static final Dish DISH_13 = new Dish(DISH_13_ID, "Nuggets",  160, FUTURE_NOT_VOTED_MENU);
-    public static final Dish DISH_14 = new Dish(DISH_14_ID, "Tea",      110, FUTURE_NOT_VOTED_MENU);
-    public static final Dish DISH_15 = new Dish(DISH_15_ID, "Cheesecake",180, FUTURE_NOT_VOTED_MENU);
+    public static final Dish DISH_13 = new Dish(DISH_13_ID, "Nuggets",  160, FUTURE_FOR_UPDATE_MENU);
+    public static final Dish DISH_14 = new Dish(DISH_14_ID, "Tea",      110, FUTURE_FOR_UPDATE_MENU);
+    public static final Dish DISH_15 = new Dish(DISH_15_ID, "Cheesecake",180,FUTURE_FOR_UPDATE_MENU);
 
     public static void assertMatch(Dish actual, Dish expected) {
         assertThat(actual).isEqualToIgnoringGivenFields(expected, "menu", "price");

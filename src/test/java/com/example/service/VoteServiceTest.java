@@ -5,6 +5,7 @@ import com.example.dto.VoteTo;
 import com.example.util.exception.NotFoundException;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 
@@ -20,9 +21,10 @@ public class VoteServiceTest extends AbstractServiceTest {
 
 
     @Test
+    @Transactional
     public void getForUserAndDate() {
-        Vote vote = service.getForUserAndDate(USER_ID, PAST_VOTE.getDate()).orElseThrow(() -> new NotFoundException("vote not found"));
-        assertMatch(vote, PAST_VOTE);
+        Vote vote = service.getForUserAndDate(USER_ID, CURRENT_VOTE.getDate()).orElseThrow(() -> new NotFoundException("vote not found"));
+        assertMatch(vote, CURRENT_VOTE);
     }
 
     @Test

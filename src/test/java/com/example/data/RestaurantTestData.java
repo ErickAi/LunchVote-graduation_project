@@ -15,9 +15,11 @@ public class RestaurantTestData {
     //data form resources/db/populate_db
     public static final int RESTAURANT_1_ID = 10000;
     public static final int RESTAURANT_2_ID = 10001;
+    public static final int RESTAURANT_3_ID = 10002;
 
     public static final Restaurant RESTAURANT_1 = new Restaurant(RESTAURANT_1_ID, "Mansarda");
     public static final Restaurant RESTAURANT_2 = new Restaurant(RESTAURANT_2_ID, "Terrassa");
+    public static final Restaurant RESTAURANT_3 = new Restaurant(RESTAURANT_3_ID, "Restaurant Closed");
 
     public static void assertMatch(Restaurant actual, Restaurant expected) {
         assertThat(actual).isEqualToIgnoringGivenFields(expected,  "menus");
