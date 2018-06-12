@@ -4,7 +4,7 @@ Lunch voting System. Graduation Project.
 =====================================
 
 <details><summary>
-## TASK
+###TASK
 </summary>
 
 ##### Design and implement a REST API using Hibernate/Spring/SpringMVC (or Spring-Boot) without frontend.
@@ -36,78 +36,59 @@ Lunch voting System. Graduation Project.
 
 ### Some cURL commands:
 #### User handling: (access denied for user and allowed for admin)
-cURL:
-
      curl 'http://localhost:8080/api/users' -i -H 'Authorization:Basic YWRtaW5AZ21haWwuY29tOmFkbWlu'
      curl 'http://localhost:8080/api/users/100000' -i -H 'Authorization:Basic YWRtaW5AZ21haWwuY29tOmFkbWlu'
 	 curl 'http://localhost:8080/api/users/by/100000' -i -H 'Authorization:Basic YWRtaW5AZ21haWwuY29tOmFkbWlu'
      curl 'http://localhost:8080/api/users' -i -d '{"name" : "NewUser", "email" : "new@mail.ru","password" : "123456","roles" : ["ROLE_USER"]}' -H 'Authorization:Basic YWRtaW5AZ21haWwuY29tOmFkbWlu' -H'Content-Type: application/json'
 
 ### Restaurant handling
-
-cURL:
-
      curl 'http://localhost:8080/api/restaurants' -i -H'Authorization: Basic dXNlckB5YW5kZXgucnU6dXNlcg=='
      curl 'http://localhost:8080/api/restaurants/10000' -i -H'Authorization: Basic dXNlckB5YW5kZXgucnU6dXNlcg=='
      curl 'http://localhost:8080/api/restaurants/find-by-name?name=Man' -i -H'Authorization: Basic dXNlckB5YW5kZXgucnU6dXNlcg=='
 
-Modification (access denied for User):
-
+		Modification (access denied for User):
      curl 'http://localhost:8080/api/restaurants' -i -d'{"name" : "New Restaurant"}' -H'Authorization: Basic dXNlckB5YW5kZXgucnU6dXNlcg==' -H'Content-Type: application/json'
 
-Modification (Access allowed for Admin):
-
+		Modification (Access allowed for Admin):
      curl 'http://localhost:8080/api/restaurants' -i -d'{"name" : "New Restaurant"}' -H'Authorization: Basic YWRtaW5AZ21haWwuY29tOmFkbWlu' -H'Content-Type: application/json'
      curl 'http://localhost:8080/api/restaurants/10002' -X'DELETE' -H'Authorization: Basic YWRtaW5AZ21haWwuY29tOmFkbWlu' -H'Content-Type: application/json'
 
 ### Menu handling
-cURL:
-
      curl 'http://localhost:8080/api/menus' -i -H'Authorization: Basic YWRtaW5AZ21haWwuY29tOmFkbWlu'
      curl 'http://localhost:8080/api/menus/1001' -i -H'Authorization: Basic YWRtaW5AZ21haWwuY29tOmFkbWlu'
 	 curl 'http://localhost:8080/api/menus/for-date' -i -H'Authorization:Basic YWRtaW5AZ21haWwuY29tOmFkbWlu'
 	 curl 'http://localhost:8080/api/menus/for-date?date=2018-12-31' -i -H'Authorization:Basic YWRtaW5AZ21haWwuY29tOmFkbWlu'
      curl 'http://localhost:8080/api/menus/for-restaurant/10000' -i -H'Authorization:Basic YWRtaW5AZ21haWwuY29tOmFkbWlu'
 	 
-Modification (Access allowed for Admin):
-	 
+		Modification (Access allowed for Admin):
 	 curl 'http://localhost:8080/api/menus' -i -d'{"date" : "2018-12-31", "restaurant":{"name": "Terrassa"}}' -H'Authorization: Basic YWRtaW5AZ21haWwuY29tOmFkbWlu' -H'Content-Type: application/json' 
      curl 'http://localhost:8080/api/menus/1000' -i -X'PUT' -d'{"date" : "2018-12-31", "restaurant":{"name": "New Restaurant"}}' -H'Authorization: Basic YWRtaW5AZ21haWwuY29tOmFkbWlu' -H'Content-Type: application/json'
 
 
 ### Dish handling
 
-cURL:
-
      curl 'http://localhost:8080/api/dishes' -i -H'Authorization: Basic YWRtaW5AZ21haWwuY29tOmFkbWlu'
      curl 'http://localhost:8080/api/dishes/101' -i -H'Authorization: Basic YWRtaW5AZ21haWwuY29tOmFkbWlu'
      curl 'http://localhost:8080/api/dishes/for-date' -i -H'Authorization:Basic YWRtaW5AZ21haWwuY29tOmFkbWlu'
      curl 'http://localhost:8080/api/dishes/for-menu/1000' -i -H'Authorization:Basic YWRtaW5AZ21haWwuY29tOmFkbWlu'
      
-	
-	 Modification (Access allowed for Admin):
-	 
+		Modification (Access allowed for Admin):
      curl 'http://localhost:8080/api/dishes' -i -d'{"name":"Fry", "price":100, "menu":{"date":"2018-12-31", "restaurant":{"name": "Mansarda"}}}' -H'Authorization: Basic YWRtaW5AZ21haWwuY29tOmFkbWlu' -H'Content-Type: application/json'	 
      curl 'http://localhost:8080/api/dishes/113' -X'DELETE' -H'Authorization: Basic YWRtaW5AZ21haWwuY29tOmFkbWlu' -H'Content-Type: application/json'
 
-## Voting
-Check current vote:
-
+### Voting
+		Check current vote:
      curl 'http://localhost:8080/api/vote' -i -H'Authorization: Basic dXNlckB5YW5kZXgucnU6dXNlcg=='
 
-Change current vote (allowed before 11.00 a.m. If time expired returns not modified vote)
-
+		Change current vote (allowed before 11.00 a.m. If time expired returns not modified vote)
      curl 'http://localhost:8080/api/vote/for-menu/1002' -i -X POST -H'Authorization: Basic dXNlckB5YW5kZXgucnU6dXNlcg==' -H'Content-Type: application/json'
 
-Vote for tomorow menu: 
-
+		Vote for tomorow menu: 
      curl 'http://localhost:8080/api/vote/for-menu/1003' -i -X POST -H'Authorization: Basic dXNlckB5YW5kZXgucnU6dXNlcg==' -H'Content-Type: application/json'
 	 
-Change tomorow vote for another menu: 
-
-     curl 'http://localhost:8080/api/vote/for-menu/1004' -i -X POST -H'Authorization: Basic dXNlckB5YW5kZXgucnU6dXNlcg==' -H'Content-Type: application/json'
-     
-Vote for expired date menu(trows exception): 
-
+		Change tomorow vote for another menu: 
+     curl 'http://localhost:8080/api/vote/for-menu/1004' -i -X POST -H'Authorization: Basic dXNlckB5YW5kZXgucnU6dXNlcg==' -H'Content-Type: application/json'    
+		
+		Vote for expired date menu(trows exception):
      curl 'http://localhost:8080/api/vote/for-menu/1000' -i -X POST -H'Authorization: Basic dXNlckB5YW5kZXgucnU6dXNlcg==' -H'Content-Type: application/json'
 	 
