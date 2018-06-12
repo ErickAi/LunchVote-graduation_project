@@ -4,7 +4,7 @@ Lunch voting System. Graduation Project.
 =====================================
 
 <details><summary>
-###TASK
+TASK
 </summary>
 
 ##### Design and implement a REST API using Hibernate/Spring/SpringMVC (or Spring-Boot) without frontend.
