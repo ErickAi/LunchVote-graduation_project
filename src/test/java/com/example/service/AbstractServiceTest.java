@@ -15,7 +15,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
         "classpath:spring/spring-app.xml",
 })
 @RunWith(SpringJUnit4ClassRunner.class)
-@Sql(scripts = {"classpath:db/populate_db.sql"}, config = @SqlConfig(encoding = "UTF-8"))
+@Sql(scripts = {"classpath:db/hsqldb_populate_db.sql"}, config = @SqlConfig(encoding = "UTF-8"))
 public abstract class AbstractServiceTest {
 
     protected final Logger log = LoggerFactory.getLogger(getClass());
