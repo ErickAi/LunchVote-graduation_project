@@ -32,16 +32,16 @@
          on session expiration as well as webapp lifecycle) -->
     <!--
     <Valve className="org.apache.catalina.valves.CometConnectionManagerValve" />
+                  validationQuery="SELECT 1 FROM users"
+
     -->
-    <Resource name="jdbc/lunchVoting"
+    <Resource name="jdbc/lunch-voting"
               auth="Container"
               type="javax.sql.DataSource"
-              url="jdbc:postgresql://localhost:5432"
+              url="jdbc:hsqldb:mem:lunch-voting"
               username="user"
-              password="password"
-              driverClassName="org.postgresql.Driver"
+              driverClassName="org.hsqldb.jdbcDriver"
 
-              validationQuery="SELECT 1"
               maxTotal="10"
               minIdle="2"
               maxWaitMillis="20000"

@@ -27,7 +27,7 @@ TASK
 </details>
  
 ## Implementation stack:
-- HSQLDB (PostgteSQL in branch)
+- HSQLDB
 - Hibernate
 - Spring
 - SpringMVC
