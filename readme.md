@@ -32,6 +32,7 @@ TASK
 - Spring
 - SpringMVC
 - Dependency managment - Maven
+As application server uses Tomcat8.
 
 ### Some cURL commands:
 #### User handling: (access denied for user and allowed for admin)
